@@ -3,8 +3,21 @@
   "displayName": "Go Main Runner",
   "description": "run or debug main function in-place",
   "version": "1.0.0",
-  "publisher": "hedzr-studio",
+  "publisher": "hedzr",
   "license": "Apache 2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hedzr/vscode-ext-go-main-runner"
+  },
+  "keywords": [
+    "main-func",
+    "golang",
+    "runner"
+  ],
+  "galleryBanner": {
+    "color": "#F2F2F2",
+    "theme": "light"
+  },
   "engines": {
     "vscode": "^1.73.0"
   },
