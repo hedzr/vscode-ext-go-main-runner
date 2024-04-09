@@ -1,8 +1,8 @@
 {
   "name": "go-main-runner",
-  "displayName": "go-main-runner",
+  "displayName": "Go Main Runner",
   "description": "run or debug main function in-place",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "publisher": "hedzr-studio",
   "license": "Apache 2.0",
   "engines": {
@@ -46,10 +46,6 @@
         "key": "ctrl+shift+f10",
         "mac": "cmd+alt+f10",
         "when": "editorTextFocus"
-      },
-      {
-        "key": "cmd+alt+shift+i",
-        "command": "editor.action.inspectTMScopes"
       }
     ],
 
@@ -58,6 +54,10 @@
         "go-main-runner.enableCodeLens": {
           "type": "boolean",
           "default": true
+        },
+        "go-main-runner.run.configs": {
+          "type": "array",
+          "default": []
         }
       }
     }
@@ -76,7 +76,7 @@
   },
   "devDependencies": {
     "@types/common-ancestor-path": "^1.0.2",
-    "@types/vscode": "^1.88.0",
+    "@types/vscode": "^1.73.0",
     "@types/mocha": "^10.0.6",
     "@types/node": "18.x",
     "@typescript-eslint/eslint-plugin": "^7.4.0",
