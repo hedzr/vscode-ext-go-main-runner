@@ -1,0 +1,95 @@
+{
+  "name": "go-main-runner",
+  "displayName": "go-main-runner",
+  "description": "run or debug main function in-place",
+  "version": "0.0.1",
+  "publisher": "hedzr-studio",
+  "license": "Apache 2.0",
+  "engines": {
+    "vscode": "^1.73.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "icon": "images/icon.png",
+  "activationEvents": [
+    "onLanguage:go"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "go-main-runner.helloWorld",
+        "title": "Hello World"
+      },
+      {
+        "title": "Enable CodeLens",
+        "command": "go-main-runner.enableCodeLens",
+        "category": "CodeLens Sample"
+      },
+      {
+        "title": "Disable Codelens",
+        "command": "go-main-runner.disableCodeLens",
+        "category": "CodeLens Sample"
+      }
+    ],
+
+    "keybindings": [
+      {
+        "command": "go-main-runner.enableCodeLens",
+        "key": "ctrl+f10",
+        "mac": "cmd+f10",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "go-main-runner.disableCodeLens",
+        "key": "ctrl+shift+f10",
+        "mac": "cmd+alt+f10",
+        "when": "editorTextFocus"
+      },
+      {
+        "key": "cmd+alt+shift+i",
+        "command": "editor.action.inspectTMScopes"
+      }
+    ],
+
+    "configuration": {
+      "properties": {
+        "go-main-runner.enableCodeLens": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run package",
+    "compile": "webpack",
+    "watch": "webpack --watch",
+    "package": "webpack --mode production --devtool hidden-source-map",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "watch-tests-2": "tsc -watch -p ./",
+    "pretest": "pnpm run compile-tests && pnpm run compile && pnpm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/common-ancestor-path": "^1.0.2",
+    "@types/vscode": "^1.88.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "18.x",
+    "@typescript-eslint/eslint-plugin": "^7.4.0",
+    "@typescript-eslint/parser": "^7.4.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "@vscode/test-cli": "^0.0.8",
+    "@vscode/test-electron": "^2.3.9"
+  },
+  "dependencies": {
+    "common-ancestor-path": "^1.0.1"
+  }
+}
