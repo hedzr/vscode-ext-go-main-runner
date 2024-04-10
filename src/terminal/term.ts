@@ -35,13 +35,13 @@ export default class Term {
 		console.log("Terminals: " + (<any>vscode.window).terminals.length);
 
 		// vscode.window.onDidOpenTerminal
-		vscode.window.onDidOpenTerminal(term => {
-			vscode.window.showInformationMessage(`onDidOpenTerminal, name: ${term.name}`);
-			console.log("Terminal opened. Total count: " + (<any>vscode.window).terminals.length);
-		});
 		vscode.window.onDidOpenTerminal((term: vscode.Terminal) => {
-			vscode.window.showInformationMessage(`onDidOpenTerminal, name: ${term.name}`);
+			// vscode.window.showInformationMessage(`onDidOpenTerminal, name: ${term.name}`);
+			console.log(`Terminal ${term.name} opened. Total count: ${(<any>vscode.window).terminals.length}`);
 		});
+		// vscode.window.onDidOpenTerminal((term: vscode.Terminal) => {
+		// 	vscode.window.showInformationMessage(`onDidOpenTerminal, name: ${term.name}`);
+		// });
 
 		// vscode.window.onDidChangeActiveTerminal
 		vscode.window.onDidChangeActiveTerminal(e => {
@@ -122,7 +122,8 @@ export default class Term {
 
 		// vscode.window.onDidCloseTerminal
 		vscode.window.onDidCloseTerminal((terminal) => {
-			vscode.window.showInformationMessage(`onDidCloseTerminal, name: ${terminal.name}`);
+			// vscode.window.showInformationMessage(`onDidCloseTerminal, name: ${terminal.name}`);
+			console.log(`onDidCloseTerminal, name: ${terminal.name}`);
 		});
 
 		// vscode.window.terminals
@@ -146,8 +147,8 @@ export default class Term {
 		// vscode.window.onDidWriteTerminalData
 		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.onDidWriteTerminalData', () => {
 			(<any>vscode.window).onDidWriteTerminalData((e: any) => {
-				vscode.window.showInformationMessage(`onDidWriteTerminalData listener attached, check the devtools console to see events`);
-				console.log('onDidWriteData', e);
+				// vscode.window.showInformationMessage(`onDidWriteTerminalData listener attached, check the devtools console to see events`);
+				console.log(`onDidWriteTerminalData listener attached, check the devtools console to see events`, e);
 			});
 		}));
 
@@ -401,7 +402,8 @@ export default class Term {
 
 	public createTerminal() {
 		vscode.window.createTerminal(`Ext Terminal #${this.NEXT_TERM_ID++}`);
-		vscode.window.showInformationMessage('Hello World 2!');
+		// vscode.window.showInformationMessage('Hello World 2!');
+		console.log(`createTerminal #${this.NEXT_TERM_ID}`);
 	}
 
 	public createTerminalForUser() {

@@ -4,20 +4,22 @@ import * as vscode from 'vscode';
 // import * as cp from 'child_process';
 import * as fs from 'fs';
 import Term from '../terminal/term';
-import { AppRunTerminalName } from './consts';
+import { AppRunTerminalName, AppScopeName } from './consts';
 
 // let context: vscode.ExtensionContext;
 let terminalOperator: Term;
 
-export function setContext(c: vscode.ExtensionContext) {
+export function install(c: vscode.ExtensionContext) {
     // context = c;
     terminalOperator = new Term(c);
+
+    c.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.codelensAction`, launchMainProg));
 }
 
 export function focusedEditingFilePath(): string {
     const activeEditor = vscode.window.activeTextEditor;
     if (activeEditor) {
-        //For Getting File Path
+        // for getting file path
         const filePath = activeEditor.document.uri.path;
         return filePath;
     }
@@ -41,12 +43,14 @@ export function launchMainProg(src: string, ...args: any[]) {
     // const currFile = focusedEditingFilePath();
     // console.log("codelensAction.args:", args, 'file path:', currFile, 'src file:', src);
     const gomod = findGoMod(src);
-    // console.log("gomod: ", gomod);
     if (gomod) {
         const workDir = path.dirname(gomod);
         const mainGo = src;
-        const cmd = `go run -tags 'hzstudio,in-vscode' ${mainGo}`;
-        // console.log("run cmd: ", cmd);
+        var buildTags = vscode.workspace.getConfiguration('go').get("buildTags", 'vscode');
+        if (!/[ ,]?vscode[ ,]?/.test(buildTags)) {
+            buildTags = `${buildTags.replace(/[ ,]+$/, '')},vscode`.replace(/^[ ,]+/, '');
+        }
+        const cmd = `go run -tags '${buildTags}' ${mainGo}`;
         console.log(`Sending command to terminal '${AppRunTerminalName}': ${cmd}`);
 
         // const execShell = (cmd: string) =>

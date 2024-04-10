@@ -2,7 +2,7 @@
 
 import path from 'path';
 import * as vscode from 'vscode';
-import { AppScopeName } from '../util/consts';
+import { AppScopeName, GolangId } from '../util/consts';
 
 class FileCodeLens extends vscode.CodeLens {
 	file: string;
@@ -60,6 +60,22 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 		vscode.workspace.onDidChangeConfiguration((_) => {
 			this._onDidChangeCodeLenses.fire();
 		});
+	}
+
+	public install(context: vscode.ExtensionContext) {
+
+		// see: https://code.visualstudio.com/api/references/document-selector
+		// context.subscriptions.push(vscode.languages.registerCodeLensProvider(AppLangId, codelensProvider));
+		context.subscriptions.push(vscode.languages.registerCodeLensProvider(GolangId, this));
+		// disposables.push(languages.registerCodeLensProvider("*", codelensProvider));
+
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.enableCodeLens`, () => {
+			vscode.workspace.getConfiguration(AppScopeName).update("enableCodeLens", true, true);
+		}));
+
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.disableCodeLens`, () => {
+			vscode.workspace.getConfiguration(AppScopeName).update("enableCodeLens", false, true);
+		}));
 	}
 
 	public provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {

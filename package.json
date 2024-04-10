@@ -2,7 +2,7 @@
   "name": "go-main-runner",
   "displayName": "Go Main Runner",
   "description": "run or debug main function in-place",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "publisher": "hedzr",
   "license": "Apache 2.0",
   "repository": {
@@ -12,7 +12,8 @@
   "keywords": [
     "main-func",
     "golang",
-    "runner"
+    "runner",
+    "debugger"
   ],
   "galleryBanner": {
     "color": "#F2F2F2",
@@ -22,7 +23,7 @@
     "vscode": "^1.73.0"
   },
   "categories": [
-    "Other"
+    "Other","Debuggers","Programming Languages","Testing"
   ],
   "icon": "images/icon.png",
   "activationEvents": [
@@ -31,10 +32,6 @@
   "main": "./dist/extension.js",
   "contributes": {
     "commands": [
-      {
-        "command": "go-main-runner.helloWorld",
-        "title": "Hello World"
-      },
       {
         "title": "Enable CodeLens",
         "command": "go-main-runner.enableCodeLens",
