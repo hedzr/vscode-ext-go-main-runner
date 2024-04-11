@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### [1.2.0]
+
+- review the settings entries, command entries
+- picking a launch config from statusbar
+  - allow show/hide a status item for launch configs
+  - allow starting a Run without debugging (If you want start debugging, you may change our default behavior from settings)
+
 ### [1.1.0]
 
 - changed: the buildTags will be retrieved from [Go][^2] settings. see also setting 'go.buildTags'.

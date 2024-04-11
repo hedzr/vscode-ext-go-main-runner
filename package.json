@@ -2,7 +2,7 @@
   "name": "go-main-runner",
   "displayName": "Go Main Runner",
   "description": "run or debug main function in-place",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "publisher": "hedzr",
   "license": "Apache 2.0",
   "repository": {
@@ -35,12 +35,37 @@
       {
         "title": "Enable CodeLens",
         "command": "go-main-runner.enableCodeLens",
-        "category": "CodeLens Sample"
+        "category": "Go Main Runner"
       },
       {
         "title": "Disable Codelens",
         "command": "go-main-runner.disableCodeLens",
-        "category": "CodeLens Sample"
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Enable Launch Configs at Status Bar",
+        "command": "go-main-runner.enableStatusItem",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Disable Launch Configs at Status Bar",
+        "command": "go-main-runner.disableStatusItem",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Enable Run Mode When Picking Launch Configs",
+        "command": "go-main-runner.pickLaunchConfigForRun",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Disable Run Mode When Picking Launch Configs (Enable Debug Mode)",
+        "command": "go-main-runner.pickLaunchConfigForDebug",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Run with Launch Configs...",
+        "command": "go-main-runner.runWithLaunchConfigs",
+        "category": "Go Main Runner"
       }
     ],
 
@@ -56,18 +81,43 @@
         "key": "ctrl+shift+f10",
         "mac": "cmd+alt+f10",
         "when": "editorTextFocus"
+      },
+      {
+        "command": "go-main-runner.runWithLaunchConfigs",
+        "key": "ctrl+shift+f5",
+        "mac": "ctrl+shift+f5",
+        "when": "editorTextFocus"
       }
     ],
 
     "configuration": {
+      "title": "Go Main Runner",
       "properties": {
         "go-main-runner.enableCodeLens": {
           "type": "boolean",
-          "default": true
+          "default": true,
+          "description": "Enable or disable Run/Debug shortcut links onto func main()"
+        },
+        "go-main-runner.enableStatusItem": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show/Hide statusbar item for picking launch configs"
+        },
+        "go-main-runner.enableStatusItemOnce": {
+          "type": "boolean",
+          "default": true,
+          "description": "Hide statusbar item after first picking it"
+        },
+        "go-main-runner.enableRunOrDebug": {
+          "type": "boolean",
+          "default": false,
+          "title": "Enable Run/Debug Mode",
+          "description": "Enable Run/Debug mode when picking launch configs from statusbar item."
         },
         "go-main-runner.run.configs": {
           "type": "array",
-          "default": []
+          "default": [],
+          "description": "Not yet"
         }
       }
     }
