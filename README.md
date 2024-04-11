@@ -14,6 +14,11 @@ This extension adds two links on top of `func main()` so that you can run/debug 
 
 Users appreciate release notes as you update your extension.
 
+### 1.1.0
+
+- changed: the buildTags will be retrieved from [Go][^2] settings. see also setting 'go.buildTags'.
+- changed: we will append 'vscode' into buildTags.
+
 ### 1.0.0
 
 Just a replacement to `go run ./main.go`.
