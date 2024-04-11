@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import Term from '../terminal/term';
 import { AppRunTerminalName, AppScopeName } from './consts';
+import * as su from './sbar-util';
 
 // let context: vscode.ExtensionContext;
 let terminalOperator: Term;
@@ -12,6 +13,7 @@ let terminalOperator: Term;
 export function install(c: vscode.ExtensionContext) {
     // context = c;
     terminalOperator = new Term(c);
+    su.install(c);
 
     c.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.codelensAction`, launchMainProg));
 }

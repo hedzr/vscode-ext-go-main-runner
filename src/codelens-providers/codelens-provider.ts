@@ -3,6 +3,8 @@
 import path from 'path';
 import * as vscode from 'vscode';
 import { AppScopeName, GolangId } from '../util/consts';
+import * as cu from '../util/codelens-util';
+import { settings } from '../util/settings-util';
 
 class FileCodeLens extends vscode.CodeLens {
 	file: string;
@@ -20,7 +22,7 @@ class RunFileCodeLens extends FileCodeLens {
 		super(file, range, command);
 		// super.command = opts;
 		this.command = {
-			title: "▷ Run",
+			title: "▷ Run", // title: `$(debug-start) Run`,
 			tooltip: "Run main() function in Terminal Window",
 			command: `${AppScopeName}.codelensAction`,
 			arguments: [this.file]
@@ -63,6 +65,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 	}
 
 	public install(context: vscode.ExtensionContext) {
+		cu.install(context);    // codelens helper wants a saved context to locate workspace folder
 
 		// see: https://code.visualstudio.com/api/references/document-selector
 		// context.subscriptions.push(vscode.languages.registerCodeLensProvider(AppLangId, codelensProvider));
@@ -70,16 +73,16 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 		// disposables.push(languages.registerCodeLensProvider("*", codelensProvider));
 
 		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.enableCodeLens`, () => {
-			vscode.workspace.getConfiguration(AppScopeName).update("enableCodeLens", true, true);
+			settings.enableCodeLens = true;
 		}));
 
 		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.disableCodeLens`, () => {
-			vscode.workspace.getConfiguration(AppScopeName).update("enableCodeLens", false, true);
+			settings.enableCodeLens = false;
 		}));
 	}
 
 	public provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
-		if (vscode.workspace.getConfiguration(AppScopeName).get("enableCodeLens", true)) {
+		if (settings.enableCodeLens) {
 			this.codeLenses = [];
 			const regex = new RegExp(this.regex);
 			const text = document.getText();
@@ -100,7 +103,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 	}
 
 	public resolveCodeLens(codeLens: vscode.CodeLens, token: vscode.CancellationToken) {
-		if (vscode.workspace.getConfiguration(AppScopeName).get("enableCodeLens", true)) {
+		if (settings.enableCodeLens) {
 			console.log("codelens:", codeLens);
 			return codeLens;
 		}

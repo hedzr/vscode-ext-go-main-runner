@@ -9,8 +9,8 @@ import * as cp from 'child_process';
 import * as fs from 'fs';
 // import { window, workspace, ExtensionContext } from 'vscode';
 import commonAncestorPath from 'common-ancestor-path';
-import * as consts from './consts';
 import * as osUtil from './os-util';
+import { AppDataFileNameSuffix, AppScopeName } from './consts';
 
 export class CodePathConfig {
     exportDirectoryOverride: string = '';
@@ -23,45 +23,45 @@ export default abstract class Path {
     /**
      * 
      */
-    public static getNodePath(): string {
+    public static get nodePath(): string {
         // const hasVolta = !!whichNormalized('volta');
         // if (hasVolta) {
         //   // get the actual Node binary location that is not inside the target directory (i.e. the globally installed version)
         //   const nodePath = await Process.execCaptureOut(`volta which node`, { processOptions: { cwd: __dirname } });
         //   return pathNormalized(nodePath);
         // }
-        const p = vscode.workspace.getConfiguration(consts.AppScopeName).get<string>('paths.node');
+        const p = vscode.workspace.getConfiguration(AppScopeName).get<string>('paths.node');
         return p || 'node';
     }
 
     /**
      * 
      */
-    public static getNpmPath(): string {
-        const p = vscode.workspace.getConfiguration(consts.AppScopeName).get<string>('paths.npm');
+    public static get npmPath(): string {
+        const p = vscode.workspace.getConfiguration(AppScopeName).get<string>('paths.npm');
         return p || 'npm';
     }
 
     /**
      * 
      */
-    public static getYarnPath(): string {
-        const p = vscode.workspace.getConfiguration(consts.AppScopeName).get<string>('paths.yarn');
+    public static get yarnPath(): string {
+        const p = vscode.workspace.getConfiguration(AppScopeName).get<string>('paths.yarn');
         return p || 'yarn';
     }
 
     public static getSystemPath(what: string): string | undefined {
         const systemPathName = osUtil.isWindows() ? 'paths.windows' : 'paths.posix';
-        return vscode.workspace.getConfiguration(consts.AppScopeName).get<string>(`${systemPathName}.${what}`);
+        return vscode.workspace.getConfiguration(AppScopeName).get<string>(`${systemPathName}.${what}`);
     }
 
-    public static getShellPath(): string {
+    public static get shellPath(): string {
         const p = this.getSystemPath('shell');
         return p || 'bash';
     }
 
-    public static getShellName(): string {
-        const p = this.getShellPath();
+    public static get shellName(): string {
+        const p = this.shellPath;
         // https://stackoverflow.com/questions/4250364/how-to-trim-a-file-extension-from-a-string-in-javascript
         return path.parse(p).name;
     }
@@ -69,25 +69,25 @@ export default abstract class Path {
     static getShellConfig(what: string, shell: string | null = null, dontCheck = false): string {
         if (!shell) {
             // look-up shell
-            shell = this.getShellName();
+            shell = this.shellName;
         }
         const target = `shells.${shell}.${what}`;
-        const val = vscode.workspace.getConfiguration(consts.AppScopeName).get<string>(target);
+        const val = vscode.workspace.getConfiguration(AppScopeName).get<string>(target);
         if (!dontCheck && !val) {
             throw new Error(`Could not read config value "${target}" - It must not be empty or undefined!`);
         }
         return val!;
     }
 
-    public static getShellInlineFlags(): string {
+    public static get shellInlineFlags(): string {
         return this.getShellConfig('inlineFlags');
     }
 
-    public static getShellPauseCommand(): string {
+    public static get shellPauseCommand(): string {
         return this.getShellConfig('pause');
     }
 
-    public static getShellSep(): string {
+    public static get shellSep(): string {
         return this.getShellConfig('sep');
     }
 
@@ -107,38 +107,38 @@ export default abstract class Path {
      */
     public static whichNormalized(command: string): string | null {
         // const cp = require('child_process');
-        const fpath = cp.execSync('which "${command}"');
-        // const fpath = await this.executeAndRead('which "${command}"');
-        return fpath ? this.pathNormalized(fpath.toString().trim()) : null;
+        const fpath = cp.execSync(`which "${command}"`);
+        // const fpath = await this.executeAndRead(`which "${command}"`);
+        return fpath ? this.normalized(fpath.toString().trim()) : null;
     }
 
     public static realPathSyncNormalized(fpath: string, options: any): string {
-        return this.pathNormalized(fs.realpathSync(fpath, options));
+        return this.normalized(fs.realpathSync(fpath, options));
     }
 
-    public static pathResolve(...paths: string[]): string {
-        return this.pathNormalized(path.resolve(...paths));
+    public static resolve(...paths: string[]): string {
+        return this.normalized(path.resolve(...paths));
     }
 
     /**
      * @param  {...string} paths 
      * @returns {string}
      */
-    public static pathJoin(...paths: string[]): string {
-        return this.pathNormalized(path.join(...paths));
+    public static join(...paths: string[]): string {
+        return this.normalized(path.join(...paths));
     }
 
     /**
      * @param {*} from Usually the shorter (potential parent/folder) path.
      * @param {*} to The (usually) more concrete file path.
      */
-    public static pathRelative(from: string, to: string): string {
-        from = this.pathNormalized(from);
-        to = this.pathNormalized(to);
+    public static relative(from: string, to: string): string {
+        from = this.normalized(from);
+        to = this.normalized(to);
         const sep = '/';
         if (!from.endsWith(sep)) { from += '/'; }
         if (!to.endsWith(sep)) { to += '/'; }
-        return this.pathNormalized(path.relative(from, to));
+        return this.normalized(path.relative(from, to));
     }
 
     /**
@@ -158,22 +158,22 @@ export default abstract class Path {
         return fpath;
     }
 
-    public static pathNormalized(fpath: string): string {
+    public static normalized(fpath: string): string {
         return fpath.replace(/\\/g, '/');
     }
 
     /**
      * In addition to standard normalization, also enforces upper-case drive letter.
      */
-    public static pathNormalizedForce(fpath: string): string {
-        return this.normalizeDriveLetter(this.pathNormalized(fpath));
+    public static normalizedForce(fpath: string): string {
+        return this.normalizeDriveLetter(this.normalized(fpath));
     }
 
     public static getPathRelativeToCommonAncestor(fpath: string, ...otherPaths: string[]): string {
         const common = this.getCommonAncestorPath(fpath, ...otherPaths);
-        return this.pathNormalizedForce(
+        return this.normalizedForce(
             common &&
-            this.pathRelative(common, fpath) ||
+            this.relative(common, fpath) ||
             fpath
         );
     }
@@ -188,11 +188,11 @@ export default abstract class Path {
         }
         paths = paths.map(p => path.resolve(p));
         const result = commonAncestorPath(...paths);
-        return this.pathNormalized(result || '');
+        return this.normalized(result || '');
     }
 
     public static isFileInPath(parent: string, file: string): boolean {
-        const relative = this.pathRelative(parent, file);
+        const relative = this.relative(parent, file);
         return (!!relative) && !relative.startsWith('..') && !path.isAbsolute(relative);
     }
 
@@ -224,14 +224,14 @@ export class PathHolder {
     }
 
     public getDefaultExportDirectory() {
-        const dir = Path.pathResolve(this.getUserDataDirectory(), 'exports');
+        const dir = Path.resolve(this.userDataDirectory, 'exports');
         return this.cfg?.exportDirectoryOverride || dir;
     }
 
     public getApplicationDataPath(basePath: string, zip = true): string {
-        let exportPath = Path.pathJoin(
+        let exportPath = Path.join(
             this.getDefaultExportDirectory(),
-            `${basePath}${consts.AppDataFileNameSuffix}`
+            `${basePath}${AppDataFileNameSuffix}`
         );
         if (zip) {
             exportPath += '.zip';
@@ -241,26 +241,35 @@ export class PathHolder {
 
     //
 
-
-    public getResourcePath(...relativePathSegments: string[]): string {
-        return this.asAbsolutePath(Path.pathJoin('resources', ...relativePathSegments));
-    }
-
-    public getUserDataDirectory(): string {
+    public get userDataDirectory(): string {
         return this.asAbsolutePath('userdata');
     }
 
-    public getLogsDirectory() {
-        return Path.pathResolve(this.getUserDataDirectory(), 'logs');
+    public get logsDirectory(): string {
+        return Path.resolve(this.userDataDirectory, 'logs');
     }
 
+    public get extensionPath(): string {
+        if (this.context) {
+            return Path.normalizedForce(this.context.extensionPath);
+        }
+        return '';
+    }
 
+    public get gitPath(): string {
+        const p = vscode.workspace.getConfiguration(AppScopeName).get<string>('paths.git');
+        return p || 'git';
+    }
 
     /**
      * @returns normalized, absolute path to the dbux-code extension directory.
      */
-    public getCodeDirectory(): string {
+    public get codeDirectory(): string {
         return this.asAbsolutePath('.');
+    }
+
+    public getResourcePath(...relativePathSegments: string[]): string {
+        return this.asAbsolutePath(Path.join('resources', ...relativePathSegments));
     }
 
     public getThemeResourcePath(...relativePathSegments: string[]) {
@@ -279,21 +288,9 @@ export class PathHolder {
 
     public asAbsolutePath(fpath: string): string {
         if (this.context) {
-            return Path.pathNormalizedForce(this.context.asAbsolutePath(fpath));
+            return Path.normalizedForce(this.context.asAbsolutePath(fpath));
         }
         return '';
-    }
-
-    public getExtensionPath(): string {
-        if (this.context) {
-            return Path.pathNormalizedForce(this.context.extensionPath);
-        }
-        return '';
-    }
-
-    public getGitPath(): string {
-        const p = vscode.workspace.getConfiguration(consts.AppScopeName).get<string>('paths.git');
-        return p || 'git';
     }
 
 } // class PathHolder
@@ -302,32 +299,32 @@ export const execPaths = {
     pathHolder: new PathHolder(),
 
     get git(): string {
-        return this.pathHolder.getGitPath();
+        return this.pathHolder.gitPath;
     },
     get node(): string {
-        return Path.getNodePath();
+        return Path.nodePath;
     },
     get npm(): string {
-        return Path.getNpmPath();
+        return Path.npmPath;
     },
     get yarn(): string {
-        return Path.getYarnPath();
+        return Path.yarnPath;
     },
     shell: {
         get path(): string {
-            return Path.getShellPath();
+            return Path.shellPath;
         },
         get name(): string {
-            return Path.getShellName();
+            return Path.shellName;
         },
         get inlineFlags(): string {
-            return Path.getShellInlineFlags();
+            return Path.shellInlineFlags;
         },
         get pauseCommand(): string {
-            return Path.getShellPauseCommand();
+            return Path.shellPauseCommand;
         },
         get sep(): string {
-            return Path.getShellSep();
+            return Path.shellSep;
         },
     },
     /**

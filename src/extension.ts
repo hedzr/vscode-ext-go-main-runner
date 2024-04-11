@@ -3,7 +3,9 @@
 import * as vscode from 'vscode';
 // import { ExtensionContext, languages, commands, Disposable, workspace } from 'vscode';
 import { CodelensProvider } from './codelens-providers/codelens-provider';
-import * as cu from './util/codelens-util';
+// import * as cu from './util/codelens-util';
+// import * as sbar from './util/sbar-util';
+// import { config } from './util/settings-util';
 // import { AppScopeName, GolangId } from './util/consts';
 
 // let disposables: Disposable[] = [];
@@ -29,10 +31,15 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// --- our main activators ---
 
-	cu.install(context);  // codelens helper wants a saved context to locate workspace folder
+	// cu.install(context);    // codelens helper wants a saved context to locate workspace folder
+	// sbar.install(context);
 
 	const codelensProvider = new CodelensProvider();
 	codelensProvider.install(context);
+
+	// console.log(context.storageUri);
+	// console.log(config.launches);
+	// console.log(config.launches[0].args);
 }
 
 // This method is called when your extension is deactivated
