@@ -9,6 +9,7 @@ import * as vscode from 'vscode';
 import * as fs from 'fs';
 import Path, * as pu from '../util/path-util';
 import { AppRunTerminalName, AppScopeName } from '../util/consts';
+// import { Z_UNKNOWN } from 'zlib';
 // import { window, workspace, ExtensionContext } from 'vscode';
 // import commonAncestorPath from 'common-ancestor-path';
 
@@ -49,56 +50,56 @@ export default class Term {
 		});
 
 		// vscode.window.createTerminal
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.createTerminal', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.createTerminal`, () => {
 			// vscode.window.createTerminal(`Ext Terminal #${NEXT_TERM_ID++}`);
 			// vscode.window.showInformationMessage('Hello World 2!');
 			this.createTerminal();
 		}));
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.createTerminalHideFromUser', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.createTerminalHideFromUser`, () => {
 			// vscode.window.createTerminal({
 			// 	name: `Ext Terminal #${NEXT_TERM_ID++}`,
 			// 	hideFromUser: true
 			// } as any);
 			this.createTerminalForUser();
 		}));
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.createAndSend', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.createAndSend`, () => {
 			// const terminal = vscode.window.createTerminal(`Ext Terminal #${NEXT_TERM_ID++}`);
 			// terminal.sendText("echo 'Sent text immediately after creating'");
 			this.createAndSend("echo 'Sent text immediately after creating'");
 		}));
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.createZshLoginShell', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.createZshLoginShell`, () => {
 			// vscode.window.createTerminal(`Ext Terminal #${NEXT_TERM_ID++}`, '/bin/zsh', ['-l']);
 			this.createZshLoginShell();
 		}));
 
 		// Terminal.hide
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.hide', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.hide`, () => {
 			this.hide();
 		}));
 
 		// Terminal.show
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.show', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.show`, () => {
 			this.show();
 		}));
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.showPreserveFocus', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.showPreserveFocus`, () => {
 			this.showPreserveFocus();
 		}));
 
 		// Terminal.sendText
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.sendText', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.sendText`, () => {
 			this.sendText("echo 'Hello world!'");
 		}));
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.sendTextNoNewLine', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.sendTextNoNewLine`, () => {
 			this.sendTextNoNewLine("echo 'Hello world!'");
 		}));
 
 		// Terminal.dispose
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.dispose', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.dispose`, () => {
 			this.destroy();
 		}));
 
 		// Terminal.processId
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.processId', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.processId`, () => {
 			// this.selectTerminal().then(terminal => {
 			// 	if (!terminal) {
 			// 		return;
@@ -127,25 +128,25 @@ export default class Term {
 		});
 
 		// vscode.window.terminals
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.terminals', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.terminals`, () => {
 			this.selectTerminal();
 		}));
 
 		// ExtensionContext.environmentVariableCollection
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.updateEnvironment', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.updateEnvironment`, () => {
 			const collection = context.environmentVariableCollection;
 			collection.replace('FOO', 'BAR');
 			collection.append('PATH', '/test/path');
 		}));
 
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.clearEnvironment', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.clearEnvironment`, () => {
 			context.environmentVariableCollection.clear();
 		}));
 
 		// vvv Proposed APIs below vvv
 
 		// vscode.window.onDidWriteTerminalData
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.onDidWriteTerminalData', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.onDidWriteTerminalData`, () => {
 			(<any>vscode.window).onDidWriteTerminalData((e: any) => {
 				// vscode.window.showInformationMessage(`onDidWriteTerminalData listener attached, check the devtools console to see events`);
 				console.log(`onDidWriteTerminalData listener attached, check the devtools console to see events`, e);
@@ -153,7 +154,7 @@ export default class Term {
 		}));
 
 		// vscode.window.onDidChangeTerminalDimensions
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.onDidChangeTerminalDimensions', () => {
+		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.onDidChangeTerminalDimensions`, () => {
 			vscode.window.showInformationMessage(`Listening to onDidChangeTerminalDimensions, check the devtools console to see events`);
 			(<any>vscode.window).onDidChangeTerminalDimensions((event: any) => {
 				console.log(`onDidChangeTerminalDimensions: terminal:${event.terminal.name}, columns=${event.dimensions.columns}, rows=${event.dimensions.rows}`);
@@ -187,24 +188,24 @@ export default class Term {
 
 		// determine the file location and number if it starts with a hash folder (e.g., '~work/rust.work/src/a.rs:996'),
 		// and jump to it in vscode editor.
-			(<any>vscode.window).registerTerminalLinkProvider({
-				provideTerminalLinks: (context: any, token: vscode.CancellationToken) => {
-					// Detect the first instance of the word "link" if it exists and linkify it
+		(<any>vscode.window).registerTerminalLinkProvider({
+			provideTerminalLinks: (context: any, token: vscode.CancellationToken) => {
+				// Detect the first instance of the word "link" if it exists and linkify it
 				const re = /(~.+)\:(\d+)/ig;
 				const arr = re.exec(context.line as string);
 				if (arr === null) {
-						return [];
-					}
+					return [];
+				}
 				const startIndex = arr.index;
 				return [{
-							startIndex,
+					startIndex,
 					length: re.lastIndex,
 					tooltip: 'Code position',
-							// You can return data in this object to access inside handleTerminalLink
+					// You can return data in this object to access inside handleTerminalLink
 					data: arr
 				}];
-				},
-				handleTerminalLink: (link: any) => {
+			},
+			handleTerminalLink: (link: any) => {
 				// vscode.window.showInformationMessage(`Link activated (data = ${link.data})`);
 				// console.log('link data:', link.data);
 				// this.exec(`code --goto ${link.data[0]}`);
