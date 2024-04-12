@@ -34,7 +34,7 @@ But you may specify buildTags at Go extension settings:
 
 And `vscode` will be appended implicitly into it automatically.
 
-Since v1.3.0, you can enable or disable `verbose` tag, or specify buildTags in settings.
+Since v1.2.1, you can enable or disable `verbose` tag, or specify buildTags in settings.
 
 ```json
 {
@@ -86,7 +86,7 @@ But here is another choice.
 
 > **WHY**: We add this feature for logging outputs by a hardenned logger, which can mask the disk locations to prevent to leak user names or disk layouts and vice versa.
 
-Since v1.3.0, we recognize 'file:line' pattern in terminal, even if it's a file staring with tilde folder.
+Since v1.2.1, we recognize 'file:line' pattern in terminal, even if it's a file staring with tilde folder.
 
 In zsh, a tilde folder is a hashed tag which can be mapped to the real path. For example,
 `~work/rust.work/a.rs` might be resolved to `/Volumes/VolWork/workspaces/rust.work/a.rs`.
