@@ -160,32 +160,82 @@ export default class Term {
 			});
 		}));
 
-		// vscode.window.registerTerminalLinkProvider
-		context.subscriptions.push(vscode.commands.registerCommand(AppScopeName + '.registerTerminalLinkProvider', () => {
+		// // vscode.window.registerTerminalLinkProvider
+		// context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.registerTerminalLinkProvider`, () => {
+		// 	(<any>vscode.window).registerTerminalLinkProvider({
+		// 		provideTerminalLinks: (context: any, token: vscode.CancellationToken) => {
+		// 			// Detect the first instance of the word "link" if it exists and linkify it
+		// 			const startIndex = (context.line as string).indexOf('link');
+		// 			if (startIndex === -1) {
+		// 				return [];
+		// 			}
+		// 			return [
+		// 				{
+		// 					startIndex,
+		// 					length: 'link'.length,
+		// 					tooltip: 'Show a notification',
+		// 					// You can return data in this object to access inside handleTerminalLink
+		// 					data: 'Example data'
+		// 				}
+		// 			];
+		// 		},
+		// 		handleTerminalLink: (link: any) => {
+		// 			vscode.window.showInformationMessage(`Link activated (data = ${link.data})`);
+		// 		}
+		// 	});
+		// }));
+
+		// determine the file location and number if it starts with a hash folder (e.g., '~work/rust.work/src/a.rs:996'),
+		// and jump to it in vscode editor.
 			(<any>vscode.window).registerTerminalLinkProvider({
 				provideTerminalLinks: (context: any, token: vscode.CancellationToken) => {
 					// Detect the first instance of the word "link" if it exists and linkify it
-					const startIndex = (context.line as string).indexOf('link');
-					if (startIndex === -1) {
+				const re = /(~.+)\:(\d+)/ig;
+				const arr = re.exec(context.line as string);
+				if (arr === null) {
 						return [];
 					}
-					return [
-						{
+				const startIndex = arr.index;
+				return [{
 							startIndex,
-							length: 'link'.length,
-							tooltip: 'Show a notification',
+					length: re.lastIndex,
+					tooltip: 'Code position',
 							// You can return data in this object to access inside handleTerminalLink
-							data: 'Example data'
-						}
-					];
+					data: arr
+				}];
 				},
 				handleTerminalLink: (link: any) => {
-					vscode.window.showInformationMessage(`Link activated (data = ${link.data})`);
-				}
-			});
-		}));
+				// vscode.window.showInformationMessage(`Link activated (data = ${link.data})`);
+				// console.log('link data:', link.data);
+				// this.exec(`code --goto ${link.data[0]}`);
 
-		context.subscriptions.push(vscode.window.registerTerminalProfileProvider(AppScopeName + '.terminal-profile', {
+				let file = link.data[1];
+				const line = link.data[2];
+				if (/^~[^/]+\//.test(file)) {
+					// resolve a tlide folder
+					this.execForText(`zsh -i -c 'hash -d'`, (err: Error, stdout: string | Buffer, stderr: string | Buffer) => {
+						let lines = stdout.toString().split('\n');
+						let l: string;
+						let res: RegExpExecArray | null;
+						for (l of lines) {
+							if ((res = /(.+)=(.+)/i.exec(l)) !== null) {
+								const re = new RegExp(`^~${res[1]}`, 'i');
+								if (re.test(file)) {
+									file = file.replace(re, res[2]);
+									console.log(`replaced. file: ${file}`);
+									this.goto(file, line);
+									break;
+								}
+							}
+						}
+					});
+				} else {
+					this.goto(file, line);
+				}
+			}
+		});
+
+		context.subscriptions.push(vscode.window.registerTerminalProfileProvider(`${AppScopeName}.terminal-profile`, {
 			provideTerminalProfile(token: vscode.CancellationToken): vscode.ProviderResult<vscode.TerminalProfile> {
 				return {
 					options: {
@@ -195,6 +245,43 @@ export default class Term {
 				};
 			}
 		}));
+	}
+
+	cursorPlacement() {
+		// release the selection caused by inserting
+		vscode.commands.executeCommand('cursorMove', {
+			to: 'right',
+			by: 'line',
+			value: 1
+		});
+		// position the cursor inside the parenthesis
+		vscode.commands.executeCommand('cursorMove', {
+			to: 'left',
+			by: 'line',
+			value: 1
+		});
+	}
+
+	// isNumber(n: string | number): boolean { return !isNaN(parseFloat(n as string)) && !isNaN(n as number - 0); }
+	// if (this.isNumber(line)) { ln = line as number; } else { ln = parseInt(line as string); }
+	asNumber(n: string | number): number {
+		if (typeof n === 'string') { return parseInt(n as string); }
+		return n as number;
+	}
+
+	async goto(file: string, line: string | number) {
+		let openPath = vscode.Uri.file(file);
+		console.log(`goto: ${file} : ${line}`);
+
+		let ln: number = this.asNumber(line);
+		console.log('line: ', ln);
+
+		let pos = new vscode.Position(ln - 1, 0);
+		let doc = await vscode.workspace.openTextDocument(openPath);
+		await vscode.window.showTextDocument(doc,
+			{ selection: new vscode.Range(pos, pos) }
+			// vscode.ViewColumn.One
+		);
 	}
 
 	//
