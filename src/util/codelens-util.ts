@@ -4,8 +4,9 @@ import * as vscode from 'vscode';
 // import * as cp from 'child_process';
 import * as fs from 'fs';
 import Term from '../terminal/term';
-import { AppRunTerminalName, AppScopeName } from './consts';
+import { AppRunTerminalName } from './consts';
 import * as su from './sbar-util';
+import { settings } from './settings-util';
 
 // let context: vscode.ExtensionContext;
 let terminalOperator: Term;
@@ -15,7 +16,14 @@ export function install(c: vscode.ExtensionContext) {
     terminalOperator = new Term(c);
     su.install(c);
 
-    c.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.codelensAction`, launchMainProg));
+    c.subscriptions.push(vscode.commands.registerCommand(settings.runAsPackageCmd, () => {
+        settings.runAsPackage = true;
+    }));
+    c.subscriptions.push(vscode.commands.registerCommand(settings.runAsSingleFileCmd, () => {
+        settings.runAsPackage = false;
+    }));
+
+    c.subscriptions.push(vscode.commands.registerCommand(settings.codeLensActionCmd, launchMainProg));
 }
 
 export function focusedEditingFilePath(): string {
