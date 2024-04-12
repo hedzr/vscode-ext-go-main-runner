@@ -2,7 +2,7 @@
 
 import path from 'path';
 import * as vscode from 'vscode';
-import { AppScopeName, GolangId } from '../util/consts';
+import { GolangId } from '../util/consts';
 import * as cu from '../util/codelens-util';
 import { settings } from '../util/settings-util';
 
@@ -24,7 +24,7 @@ class RunFileCodeLens extends FileCodeLens {
 		this.command = {
 			title: "▷ Run", // title: `$(debug-start) Run`,
 			tooltip: "Run main() function in Terminal Window",
-			command: `${AppScopeName}.codelensAction`,
+			command: settings.codeLensActionCmd,
 			arguments: [this.file]
 		};
 	}
@@ -72,12 +72,17 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 		context.subscriptions.push(vscode.languages.registerCodeLensProvider(GolangId, this));
 		// disposables.push(languages.registerCodeLensProvider("*", codelensProvider));
 
-		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.enableCodeLens`, () => {
+		context.subscriptions.push(vscode.commands.registerCommand(settings.enableCodeLensCmd, () => {
 			settings.enableCodeLens = true;
 		}));
-
-		context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.disableCodeLens`, () => {
+		context.subscriptions.push(vscode.commands.registerCommand(settings.disableCodeLensCmd, () => {
 			settings.enableCodeLens = false;
+		}));
+		context.subscriptions.push(vscode.commands.registerCommand(settings.enableVerboseBuildTagCmd, () => {
+			settings.enableVerboseBuildTag = true;
+		}));
+		context.subscriptions.push(vscode.commands.registerCommand(settings.disableVerboseBuildTagCmd, () => {
+			settings.enableVerboseBuildTag = false;
 		}));
 	}
 
@@ -104,7 +109,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 
 	public resolveCodeLens(codeLens: vscode.CodeLens, token: vscode.CancellationToken) {
 		if (settings.enableCodeLens) {
-			console.log("codelens:", codeLens);
+			// console.log("codelens:", codeLens);
 			return codeLens;
 		}
 		return null;

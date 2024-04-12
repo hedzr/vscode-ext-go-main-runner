@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Store, settings } from './settings-util';
-import { AppScopeName } from './consts';
+// import { AppScopeName } from './consts';
 
 let launchConfigsStatusBarItem: vscode.StatusBarItem;
 let store: Store;
@@ -11,8 +11,8 @@ export function install(context: vscode.ExtensionContext) {
 
     // register a command that is invoked when the status bar
     // item is selected
-    const myCommandId = `${AppScopeName}.runWithLaunchConfigs`;
-    context.subscriptions.push(vscode.commands.registerCommand(myCommandId, () => {
+    // const myCommandId = `${AppScopeName}.runWithLaunchConfigs`;
+    context.subscriptions.push(vscode.commands.registerCommand(settings.runStatusItemCmd, () => {
         // const n = getNumberOfSelectedLines(vscode.window.activeTextEditor);
         // vscode.window.showInformationMessage(`Yeah, ${n} line(s) selected... Keep going!`);
         showQuickPickLaunchConfigsAndRun(context);
@@ -20,7 +20,7 @@ export function install(context: vscode.ExtensionContext) {
 
     // create a new status bar item that we can now manage
     launchConfigsStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0); // 100
-    launchConfigsStatusBarItem.command = myCommandId;
+    launchConfigsStatusBarItem.command = settings.runStatusItemCmd;
     launchConfigsStatusBarItem.tooltip = 'Run for main()';
     context.subscriptions.push(launchConfigsStatusBarItem);
 
@@ -31,20 +31,20 @@ export function install(context: vscode.ExtensionContext) {
     }));
     // subscriptions.push(vscode.window.onDidChangeTextEditorSelection(updateStatusBarItem));
 
-    context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.pickLaunchConfigForRun`, () => {
+    context.subscriptions.push(vscode.commands.registerCommand(settings.enableRunModeCmd, () => {
         settings.enableRunOrDebug = true;
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.pickLaunchConfigForDebug`, () => {
+    context.subscriptions.push(vscode.commands.registerCommand(settings.enableDebugModeCmd, () => {
         settings.enableRunOrDebug = false;
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.enableStatusItem`, () => {
+    context.subscriptions.push(vscode.commands.registerCommand(settings.enableStatusItemCmd, () => {
         settings.statusItemVisible = true;
         doUpdateStatusBarItems(true);
     }));
 
-    context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.disableStatusItem`, () => {
+    context.subscriptions.push(vscode.commands.registerCommand(settings.disableStatusItemCmd, () => {
         settings.statusItemVisible = false;
         doUpdateStatusBarItems(false);
     }));
