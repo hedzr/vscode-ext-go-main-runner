@@ -22,29 +22,74 @@ export const settings = {
         }
         return [];
     },
+
+    get enableStatusItemCmd(): string { return `${AppScopeName}.launchConfigs.enableStatusItem`; },
+    get disableStatusItemCmd(): string { return `${AppScopeName}.launchConfigs.disableStatusItem`; },
+    get runStatusItemCmd(): string { return `${AppScopeName}.launchConfigs.runOrDebug`; },
     get statusItemVisible(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("enableStatusItem", true);
+        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("launch.enableStatusItem", true);
     },
     set statusItemVisible(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("enableStatusItem", b, true);
+        vscode.workspace.getConfiguration(AppScopeName).update("launch.enableStatusItem", b, true);
     },
     get statusItemVisibleOnce(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("enableStatusItemOnce", true);
+        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("launch.enableStatusItemOnce", true);
     },
     set statusItemVisibleOnce(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("enableStatusItemOnce", b, true);
+        vscode.workspace.getConfiguration(AppScopeName).update("launch.enableStatusItemOnce", b, true);
     },
+    get enableRunModeCmd(): string { return `${AppScopeName}.launchConfigs.pickForRun`; },
+    get enableDebugModeCmd(): string { return `${AppScopeName}.launchConfigs.pickForDebug`; },
     get enableRunOrDebug(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("enableRunOrDebug", true);
+        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("launch.enableRunOrDebug", true);
     },
     set enableRunOrDebug(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("enableRunOrDebug", b, true);
+        vscode.workspace.getConfiguration(AppScopeName).update("launch.enableRunOrDebug", b, true);
     },
+
+    get enableCodeLensCmd(): string { return `${AppScopeName}.codeLens.enable`; },
+    get disableCodeLensCmd(): string { return `${AppScopeName}.codeLens.disable`; },
+    get codeLensActionCmd(): string { return `${AppScopeName}.codeLens.runOrDebug`; },
     get enableCodeLens(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("enableCodeLens", true);
+        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.enableCodeLens", true);
     },
     set enableCodeLens(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("disableCodeLens", b, true);
+        vscode.workspace.getConfiguration(AppScopeName).update("main.enableCodeLens", b, true);
+    },
+    get runAsPackageCmd(): string { return `${AppScopeName}.codeLens.runAsPackage`; },
+    get runAsSingleFileCmd(): string { return `${AppScopeName}.codeLens.runAsSingleFile`; },
+    get runAsPackage(): boolean {
+        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.asPackage", true);
+    },
+    set runAsPackage(b: boolean) {
+        vscode.workspace.getConfiguration(AppScopeName).update("main.run.asPackage", b, true);
+    },
+    get enableVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableVerbose`; },
+    get disableVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableVerbose`; },
+    get enableVerboseBuildTag(): boolean {
+        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.verbose", true);
+    },
+    set enableVerboseBuildTag(b: boolean) {
+        vscode.workspace.getConfiguration(AppScopeName).update("main.run.verbose", b, true);
+    },
+    get enableDelveBuildTag(): boolean {
+        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.buildtag.delve", false);
+    },
+    get enableVscodeBuildTag(): boolean {
+        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.buildtag.vscode", true);
+    },
+    get runBuildTagsCmd(): string { return `${AppScopeName}.build-tags`; },
+    get runBuildTags(): string {
+        return vscode.workspace.getConfiguration(AppScopeName).get<string>("main.run.tags", '');
+    },
+    set runBuildTags(b: string) {
+        vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags", b, true);
+    },
+    get runConfigs(): any[] {
+        return vscode.workspace.getConfiguration(AppScopeName).get<any[]>("main.run.configs", []);
+    },
+    set runConfigs(b: any[]) {
+        vscode.workspace.getConfiguration(AppScopeName).update("main.run.configs", b, true);
     },
 };
 
