@@ -48,11 +48,23 @@ export function launchMainProg(src: string, ...args: any[]) {
     if (gomod) {
         const workDir = path.dirname(gomod);
         const mainGo = src;
+        const mainGoDir = path.dirname(mainGo);
         var buildTags = vscode.workspace.getConfiguration('go').get("buildTags", 'vscode');
-        if (!/[ ,]?vscode[ ,]?/.test(buildTags)) {
-            buildTags = `${buildTags.replace(/[ ,]+$/, '')},vscode`.replace(/^[ ,]+/, '');
-        }
-        const cmd = `go run -tags '${buildTags}' ${mainGo}`;
+        var tags: string[] = [];
+        buildTags.split(/[ ,]/).forEach((v, i, a) => {
+            if (v !== '' && v !== 'vscode' && tags.indexOf(v) === -1) { tags.push(v); }
+        });
+        if (settings.enableVerboseBuildTag && tags.indexOf('verbose') === -1) { tags.push('verbose'); }
+        if (settings.enableDelveBuildTag && tags.indexOf('delve') === -1) { tags.push('delve'); }
+        settings.runBuildTags.split(/[ ,]/).forEach((v, i, a) => {
+            if (v !== '' && tags.indexOf(v) === -1) { tags.push(v); }
+        });
+        if (settings.enableVscodeBuildTag && tags.indexOf('vscode') === -1) { tags.push('vscode'); }
+        buildTags = tags.join(',');
+        // if (!/[ ,]?vscode[ ,]?/.test(buildTags)) {
+        //     buildTags = `${buildTags.replace(/[ ,]+$/, '')},vscode`.replace(/^[ ,]+/, '');
+        // }
+        const cmd = settings.runAsPackage ? `go run -tags '${buildTags}' ${mainGoDir}` : `go run -tags '${buildTags}' ${mainGo}`;
         console.log(`Sending command to terminal '${AppRunTerminalName}': ${cmd}`);
 
         // const execShell = (cmd: string) =>
