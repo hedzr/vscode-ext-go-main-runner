@@ -341,6 +341,27 @@ export default class Term {
 		return terminal;
 	}
 
+	public exec(cmd: string) {
+		const cp = require('child_process');
+		const execShell = (cmd: string) =>
+			new Promise<string>((resolve, reject) => {
+				cp.exec(cmd, (err: string, out: string) => {
+					if (err) {
+						console.log('stderr: ' + err);
+						return reject(err);
+					}
+					// console.log('stdout: ' + out);
+					return resolve(out);
+				});
+			});
+		execShell(cmd);
+	}
+
+	public execForText(cmd: string, callback: (err: Error, stdout: string | Buffer, stderr: string | Buffer) => any) {
+		const cp = require('child_process');
+		return cp.exec(cmd, callback);
+	}
+
 	public async runInTerminal(cwd: string, command: string): Promise<vscode.Terminal | undefined> {
 		cwd = pu.default.normalizeDriveLetter(cwd);
 
