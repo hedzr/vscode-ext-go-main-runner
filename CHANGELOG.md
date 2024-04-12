@@ -5,7 +5,27 @@ All notable changes to the "go-main-runner" extension will be documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [History]
+
+### [1.2.1]
+
+- review the descriptions and documents
+- refine settings (entry names, ...)
+- Running main():
+  - added `go-main-runner.main.run.asPackage` to enable running main.go under package context instead of as a single file.
+- Launch Configs:
+  - changed `go-main-runner.launch.enableRunOrDebug` with default value `true`.
+  - changed `go-main-runner.launch.enableRunOrDebug` with default value `true`.
+- Links in Terminal:
+  - added: recognize 'file:line' pattern starting with tilde folder name and jump, in terminal
+- Build Tags for running main():
+  - added: append 'verbose' build tag if setting enabled.
+  - added: append 'verbose' build tag always.
+  - added: append Go Extension build tags automatically.
+  - added: append build tags specified from settings.
+  
+  > A tilde folder is a hashed folder, for example: `~work/rust.work/a.rs` might be resolved to `/Volumes/VolWork/workspaces/rust.work/a.rs`.
+  > See also zsh/bash command `hash -d`.
 
 ### [1.2.0]
 
