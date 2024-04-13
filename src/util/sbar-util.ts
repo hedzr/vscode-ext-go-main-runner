@@ -21,7 +21,7 @@ export function install(context: vscode.ExtensionContext) {
     // create a new status bar item that we can now manage
     launchConfigsStatusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Left, 0); // 100
     launchConfigsStatusBarItem.command = settings.runStatusItemCmd;
-    launchConfigsStatusBarItem.tooltip = 'Run for main()';
+    launchConfigsStatusBarItem.tooltip = 'Run with Launch Configs...';
     context.subscriptions.push(launchConfigsStatusBarItem);
 
     // register some listener that make sure the status bar 
