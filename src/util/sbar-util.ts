@@ -97,7 +97,6 @@ export async function showQuickPickLaunchConfigsAndRun(_: vscode.ExtensionContex
     if (result) {
         const name = result.label;
         store.selectedLaunchConfigName = name;
-    }
 
     // let launchConfig = {
     //     "name": "Test",
@@ -113,6 +112,7 @@ export async function showQuickPickLaunchConfigsAndRun(_: vscode.ExtensionContex
     const debugCmd = 'workbench.action.debug.start';
     const runCmd = 'workbench.action.debug.run';
     runWithConfig(settings.enableRunOrDebug ? runCmd : debugCmd, result);
+    }
 }
 
 let picked = false;
