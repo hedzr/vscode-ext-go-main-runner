@@ -24,7 +24,7 @@ class RunFileCodeLens extends FileCodeLens {
 		this.command = {
 			title: "▷ Run", // title: `$(debug-start) Run`,
 			tooltip: "Run main() function in Terminal Window",
-			command: settings.codeLensActionCmd,
+			command: settings.launchMainFuncCmd,
 			arguments: [this.file]
 		};
 	}

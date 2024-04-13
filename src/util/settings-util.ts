@@ -26,6 +26,7 @@ export const settings = {
     get enableStatusItemCmd(): string { return `${AppScopeName}.launchConfigs.enableStatusItem`; },
     get disableStatusItemCmd(): string { return `${AppScopeName}.launchConfigs.disableStatusItem`; },
     get runStatusItemCmd(): string { return `${AppScopeName}.launchConfigs.runOrDebug`; },
+    get launchWithConfigsCmd(): string { return this.runStatusItemCmd; },
     get statusItemVisible(): boolean {
         return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("launch.enableStatusItem", true);
     },
@@ -50,12 +51,14 @@ export const settings = {
     get enableCodeLensCmd(): string { return `${AppScopeName}.codeLens.enable`; },
     get disableCodeLensCmd(): string { return `${AppScopeName}.codeLens.disable`; },
     get codeLensActionCmd(): string { return `${AppScopeName}.codeLens.runOrDebug`; },
+    get launchMainFuncCmd(): string { return this.codeLensActionCmd; },
     get enableCodeLens(): boolean {
         return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.enableCodeLens", true);
     },
     set enableCodeLens(b: boolean) {
         vscode.workspace.getConfiguration(AppScopeName).update("main.enableCodeLens", b, true);
     },
+
     get runAsPackageCmd(): string { return `${AppScopeName}.codeLens.runAsPackage`; },
     get runAsSingleFileCmd(): string { return `${AppScopeName}.codeLens.runAsSingleFile`; },
     get runAsPackage(): boolean {
@@ -64,6 +67,7 @@ export const settings = {
     set runAsPackage(b: boolean) {
         vscode.workspace.getConfiguration(AppScopeName).update("main.run.asPackage", b, true);
     },
+
     get enableVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableVerbose`; },
     get disableVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableVerbose`; },
     get enableVerboseBuildTag(): boolean {

@@ -12,7 +12,7 @@ export function install(context: vscode.ExtensionContext) {
     // register a command that is invoked when the status bar
     // item is selected
     // const myCommandId = `${AppScopeName}.runWithLaunchConfigs`;
-    context.subscriptions.push(vscode.commands.registerCommand(settings.runStatusItemCmd, () => {
+    context.subscriptions.push(vscode.commands.registerCommand(settings.launchWithConfigsCmd, () => {
         // const n = getNumberOfSelectedLines(vscode.window.activeTextEditor);
         // vscode.window.showInformationMessage(`Yeah, ${n} line(s) selected... Keep going!`);
         showQuickPickLaunchConfigsAndRun(context);
@@ -98,20 +98,20 @@ export async function showQuickPickLaunchConfigsAndRun(_: vscode.ExtensionContex
         const name = result.label;
         store.selectedLaunchConfigName = name;
 
-    // let launchConfig = {
-    //     "name": "Test",
-    //     "type": "node",
-    //     "request": "launch",
-    //     "program": "${workspaceRoot}/test.js",
-    //     "cwd": "${workspaceRoot}",
-    //     "stopOnEntry": true
-    // };
+        // let launchConfig = {
+        //     "name": "Test",
+        //     "type": "node",
+        //     "request": "launch",
+        //     "program": "${workspaceRoot}/test.js",
+        //     "cwd": "${workspaceRoot}",
+        //     "stopOnEntry": true
+        // };
 
-    // https://github.com/microsoft/vscode/issues/4615
-    // const debugCmd = 'vscode.startDebug';
-    const debugCmd = 'workbench.action.debug.start';
-    const runCmd = 'workbench.action.debug.run';
-    runWithConfig(settings.enableRunOrDebug ? runCmd : debugCmd, result);
+        // https://github.com/microsoft/vscode/issues/4615
+        // const debugCmd = 'vscode.startDebug';
+        const debugCmd = 'workbench.action.debug.start';
+        const runCmd = 'workbench.action.debug.run';
+        runWithConfig(settings.enableRunOrDebug ? runCmd : debugCmd, result);
     }
 }
 
