@@ -90,7 +90,7 @@
       },
       {
         "title": "Run with Launch Configs...",
-        "command": "go-main-runner.runWithLaunchConfigs",
+        "command": "go-main-runner.launchConfigs.runOrDebug",
         "category": "Go Main Runner"
       }
     ],
@@ -123,8 +123,7 @@
       {
         "command": "go-main-runner.launchConfigs.runOrDebug",
         "key": "ctrl+shift+f5",
-        "mac": "ctrl+shift+f5",
-        "when": "editorTextFocus"
+        "mac": "ctrl+shift+f5"
       }
     ],
 
