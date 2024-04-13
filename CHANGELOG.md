@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.2]
+
+- fix wrong command name (for launch config status item)
+- fix tooltip of status item
+- fix running launch config when quick pick cancelled
+- rename launch commands to meaningful properties
+
 ### [1.2.1]
 
 - review the descriptions and documents
