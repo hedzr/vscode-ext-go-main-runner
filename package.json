@@ -141,10 +141,20 @@
           "title": "Run main func under package context",
           "description": "Run main func under package context or not (default is running the single file)"
         },
-        "go-main-runner.main.run.verbose": {
+        "go-main-runner.main.run.tags.verbose": {
           "type": "boolean",
           "default": false,
           "description": "add 'verbose' to build tags"
+        },
+        "go-main-runner.main.run.tags.delve": {
+          "type": "boolean",
+          "default": false,
+          "description": "add 'delve' to build tags"
+        },
+        "go-main-runner.main.run.tags.vscode": {
+          "type": "boolean",
+          "default": false,
+          "description": "add 'vscode' to build tags"
         },
         "go-main-runner.main.run.tags": {
           "type": "string",
