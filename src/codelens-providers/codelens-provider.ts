@@ -2,7 +2,7 @@
 
 import path from 'path';
 import * as vscode from 'vscode';
-import { GolangId } from '../util/consts';
+import { AppScopeName, GolangId } from '../util/consts';
 import * as cu from '../util/codelens-util';
 import { settings } from '../util/settings-util';
 
@@ -76,9 +76,11 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 
 		context.subscriptions.push(vscode.commands.registerCommand(settings.enableCodeLensCmd, () => {
 			settings.enableCodeLens = true;
+			vscode.window.showInformationMessage(`[${AppScopeName}] CodeLens (go run func main) is ${settings.enableCodeLens ? 'enabled' : 'disabled'}`);
 		}));
 		context.subscriptions.push(vscode.commands.registerCommand(settings.disableCodeLensCmd, () => {
 			settings.enableCodeLens = false;
+			vscode.window.showInformationMessage(`[${AppScopeName}] CodeLens (go run func main) is ${settings.enableCodeLens ? 'enabled' : 'disabled'}`);
 		}));
 
 		context.subscriptions.push(vscode.commands.registerCommand(settings.enableVerboseBuildTagCmd, () => {
@@ -89,6 +91,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 		}));
 		context.subscriptions.push(vscode.commands.registerCommand(settings.toggleVerboseBuildTagCmd, () => {
 			settings.enableVerboseBuildTag = !settings.enableVerboseBuildTag;
+			vscode.window.showInformationMessage(`buildtag 'verbose' is ${settings.enableVerboseBuildTag ? 'enabled' : 'disabled'}`);
 		}));
 
 		context.subscriptions.push(vscode.commands.registerCommand(settings.enableDelveBuildTagCmd, () => {
@@ -99,6 +102,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 		}));
 		context.subscriptions.push(vscode.commands.registerCommand(settings.toggleDelveBuildTagCmd, () => {
 			settings.enableDelveBuildTag = !settings.enableDelveBuildTag;
+			vscode.window.showInformationMessage(`buildtag 'delve' is ${settings.enableDelveBuildTag ? 'enabled' : 'disabled'}`);
 		}));
 
 		context.subscriptions.push(vscode.commands.registerCommand(settings.enableVscodeBuildTagCmd, () => {
@@ -109,6 +113,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 		}));
 		context.subscriptions.push(vscode.commands.registerCommand(settings.toggleVscodeBuildTagCmd, () => {
 			settings.enableVscodeBuildTag = !settings.enableVscodeBuildTag;
+			vscode.window.showInformationMessage(`buildtag 'vscode' is ${settings.enableVscodeBuildTag ? 'enabled' : 'disabled'}`);
 		}));
 	}
 
