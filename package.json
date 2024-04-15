@@ -2,7 +2,7 @@
   "name": "go-main-runner",
   "displayName": "Go Main Runner",
   "description": "run or debug main function in-place",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "publisher": "hedzr",
   "license": "Apache 2.0",
   "repository": {
@@ -57,6 +57,7 @@
         "command": "go-main-runner.codeLens.runAsSingleFile",
         "category": "Go Main Runner"
       },
+
       {
         "title": "Enable Verbose BuildTag",
         "command": "go-main-runner.codeLens.buildTags.enableVerbose",
@@ -65,6 +66,43 @@
       {
         "title": "Disable Verbose BuildTag",
         "command": "go-main-runner.codeLens.buildTags.disableVerbose",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Toggle Verbose BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.toggleVerbose",
+        "category": "Go Main Runner"
+      },
+
+      {
+        "title": "Enable Delve BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.enableDelve",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Disable Delve BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.disableDelve",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Toggle Delve BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.toggleDelve",
+        "category": "Go Main Runner"
+      },
+
+      {
+        "title": "Enable Vscode BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.enableVscode",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Disable Vscode BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.disableVscode",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Toggle Vscode BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.toggleVscode",
         "category": "Go Main Runner"
       },
 
@@ -111,10 +149,40 @@
         "when": "editorTextFocus"
       },
       {
+        "command": "go-main-runner.codeLens.buildTags.toggleVerbose",
+        "key": "ctrl+shift+v",
+        "mac": "cmd+alt+v",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "go-main-runner.codeLens.buildTags.toggleDelve",
+        "key": "ctrl+shift+d",
+        "mac": "cmd+alt+d",
+        "when": "editorTextFocus"
+      },
+      {
         "command": "go-main-runner.launchConfigs.runOrDebug",
-        "key": "ctrl+shift+f5",
-        "mac": "ctrl+shift+f5"
+        "key": "ctrl+m ctrl+l",
+        "mac": "cmd+m cmd+l",
+        "when": "debuggersAvailable && debugState != 'initializing' && editorLangId == go"
+      },
+      {
+        "command": "go-main-runner.codeLens.runOrDebug",
+        "key": "ctrl+m ctrl+r",
+        "mac": "cmd+k cmd+r",
+        "when": "editorTextFocus && editorLangId == go"
+      },
+      {
+        "key": "cmd+m cmd+n",
+        "command": "workbench.action.debug.run",
+        "when": "debuggersAvailable && debugState != 'initializing' && editorLangId == go"
+      },
+      {
+        "key": "cmd+m cmd+b",
+        "command": "workbench.action.debug.start",
+        "when": "debuggersAvailable && debugState == 'inactive'"
       }
+    
     ],
 
     "configuration": {
@@ -151,7 +219,7 @@
           "description": "add 'vscode' to build tags",
           "order": 108
         },
-        "go-main-runner.main.run.tags": {
+        "go-main-runner.main.run.tags.more": {
           "type": "string",
           "default": "",
           "description": "build tags, comma separated strings",

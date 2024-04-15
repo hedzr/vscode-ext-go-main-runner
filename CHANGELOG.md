@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.5]
+
+- add shortcut: build tag: toggle verbose command (<kbd>cmd+option+v</kbd>)
+- add shortcut: build tag: toggle delve command (<kbd>cmd+option+d</kbd>)
+- add more shortcuts (see all at readme)
+- fix conflicts between tags (`.more`) and verbose (`.verbose`)
+- more...
+
 ### [1.2.3]
 
 - fix bugs

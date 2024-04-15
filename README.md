@@ -118,6 +118,25 @@ All defined hashed pairs can be found generally by invoking:
 hash -d
 ```
 
+## Keybindings
+
+These keybindings are predefined:
+
+| Command                                    | Keys             |      |      |
+| ------------------------------------------ | ---------------- | ---- | ---- |
+| Debug: Start Debugging                     | <kbd>⌘M ⌘B</kbd> |      |      |
+| Debug: Start Without Debugging             | <kbd>⌘M ⌘N</kbd> |      |      |
+| Go Main Runner: Disable Codelens           | <kbd>⌥⌘F10</kbd> |      |      |
+| Go Main Runner: Enable CodeLens            | <kbd>⌘F10</kbd>  |      |      |
+| Go Main Runner: Disable Verbose BuildTag   | <kbd>⌥⌘F9</kbd>  |      |      |
+| Go Main Runner: Enable Verbose BuildTag    | <kbd>⌘F9</kbd>   |      |      |
+| Go Main Runner: Run or Debug main()        | <kbd>⌘M ⌘R</kbd> |      |      |
+| Go Main Runner: Run with Launch Configs... | <kbd>⌘M ⌘L</kbd> |      |      |
+| Go Main Runner: Toggle Delve BuildTag      | <kbd>⌥⌘D</kbd>   |      |      |
+| Go Main Runner: Toggle Verbose BuildTag    | <kbd>⌥⌘V</kbd>   |      |      |
+
+
+
 ## For more information
 
 * [Golang Ext: Debugging: Launch Config](https://github.com/golang/vscode-go/blob/master/docs/debugging.md#configure)
