@@ -122,20 +122,47 @@ hash -d
 
 These keybindings are predefined:
 
-| Command                                    | Keys             |      |      |
-| ------------------------------------------ | ---------------- | ---- | ---- |
-| Debug: Start Debugging                     | <kbd>⌘M ⌘B</kbd> |      |      |
-| Debug: Start Without Debugging             | <kbd>⌘M ⌘N</kbd> |      |      |
-| Go Main Runner: Disable Codelens           | <kbd>⌥⌘F10</kbd> |      |      |
-| Go Main Runner: Enable CodeLens            | <kbd>⌘F10</kbd>  |      |      |
-| Go Main Runner: Disable Verbose BuildTag   | <kbd>⌥⌘F9</kbd>  |      |      |
-| Go Main Runner: Enable Verbose BuildTag    | <kbd>⌘F9</kbd>   |      |      |
-| Go Main Runner: Run or Debug main()        | <kbd>⌘M ⌘R</kbd> |      |      |
-| Go Main Runner: Run with Launch Configs... | <kbd>⌘M ⌘L</kbd> |      |      |
-| Go Main Runner: Toggle Delve BuildTag      | <kbd>⌥⌘D</kbd>   |      |      |
-| Go Main Runner: Toggle Verbose BuildTag    | <kbd>⌥⌘V</kbd>   |      |      |
+| Command                                    | Keys             | Win/Linux        |
+| ------------------------------------------ | ---------------- | ---------------- |
+| Debug: Start Debugging                     | <kbd>⌘M ⌘B</kbd> | <kbd>^M ^B</kbd> |
+| Debug: Start Without Debugging             | <kbd>⌘M ⌘N</kbd> | <kbd>^M ^N</kbd> |
+| Go Main Runner: Disable Codelens           | <kbd>⌥⌘F10</kbd> | <kbd>⇧^F10</kbd> |
+| Go Main Runner: Enable CodeLens            | <kbd>⌘F10</kbd>  | <kbd>^F10</kbd>  |
+| Go Main Runner: Run or Debug main()        | <kbd>⌘M ⌘R</kbd> | <kbd>^M ^R</kbd> |
+| Go Main Runner: Run with Launch Configs... | <kbd>⌘M ⌘L</kbd> | <kbd>^M ^L</kbd> |
+| Go Main Runner: Toggle Delve BuildTag      | <kbd>⌥⌘D</kbd>   | <kbd>⇧^D</kbd>   |
+| Go Main Runner: Toggle Verbose BuildTag    | <kbd>⌥⌘V</kbd>   | <kbd>⇧^V</kbd>   |
+
+Note that vscode has builtin keybindings:
+
+| Command                        | Keys           |
+| ------------------------------ | -------------- |
+| Debug: Start Debugging         | <kbd>F5</kbd>  |
+| Debug: Start Without Debugging | <kbd>^F5</kbd> |
 
 
+
+## Commands
+
+#### Go Main Runner: Enable CodeLens
+
+This command enables codelens support, it causes detecting `func main()` and the links binding to them to execute.
+
+Go Main Runner: Disable CodeLens
+
+The opposition.
+
+#### Go Main Runner: Toggle Delve BuildTag
+
+Enable/disable `-tags delve`.
+
+#### Go Main Runner: Toggle Verbose BuildTag
+
+Enable/disable `-tags verbose`. Shortcut is <kbd>⌥⌘V</kbd> (Or <kbd>⇧^V</kbd> for windows/linux).
+
+`verbose` is used to enable `slog.Verbose()` logging. The `slog.Verbose` is an enhanced feature of `hedzr/logg/slog`, which is optimized and disable in normal build but can print to logging device only if `verbose` tag defined.
+
+We assume you will code yours following this principle. If so, this command takes benifit to you to *debug* the main program offline (by `go run`).
 
 ## For more information
 
