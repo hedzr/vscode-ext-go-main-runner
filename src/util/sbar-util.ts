@@ -100,8 +100,8 @@ export async function showQuickPickLaunchConfigsAndRun(_: vscode.ExtensionContex
 
     // vscode.window.showInformationMessage(`To Be Run: ${result}`);
     if (result) {
-        const file = result;
-        const name = file.label;
+        const config = result;
+        const name = config.label;
         store.selectedLaunchConfigName = name;
 
         // let launchConfig = {
@@ -126,13 +126,13 @@ export async function showQuickPickLaunchConfigsAndRun(_: vscode.ExtensionContex
         };
         switch (settings.launchMode) {
             case LaunchMode.RunInTerminal:
-                launchMainProg(focusedFileAbs);
+                launchMainProg(focusedFileAbs, config);
                 break;
             case LaunchMode.Run:
-                runWithConfig(runCmd, file, callback);
+                runWithConfig(runCmd, config, callback);
                 break;
             case LaunchMode.Debug:
-                runWithConfig(debugCmd, file, callback);
+                runWithConfig(debugCmd, config, callback);
                 break;
         }
         // runWithConfig(settings.enableRunOrDebug ? runCmd : debugCmd, file);

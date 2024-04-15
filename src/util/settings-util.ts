@@ -89,6 +89,12 @@ export function runFromConfig() {
 }
 
 export function runWithConfig(runCmd: string, config?: any, callback?: () => void | null) {
+    if (config) {
+        const tags = buildTags(config);
+        if (tags) {
+            config.buildFlags = `${config.buildFlags} -tags '${tags}'`;
+        }
+    }
     vscode.commands.executeCommand(runCmd, config).then(() => {
         // vscode.window.showInformationMessage('OK!');
         settings.picked = true;
@@ -101,15 +107,21 @@ export function runWithConfig(runCmd: string, config?: any, callback?: () => voi
     });
 }
 
-function buildTags(): string {
+function buildTags(config?: any): string {
     var buildTags = vscode.workspace.getConfiguration('go').get("buildTags", 'vscode');
     var tags: string[] = [];
-    buildTags.split(/[ ,]/).forEach((v, i, a) => {
+    buildTags.split(/[ ,]+/).forEach((v, i, a) => {
         if (v !== '' && v !== 'vscode' && tags.indexOf(v) === -1) { tags.push(v); }
     });
+    let matches = /-tags ['"]?([^'" ]+)/.exec(config?.buildFlags)
+    if (matches !== null) {
+        matches[1].split(/[ ,]+/).forEach((v, i, a) => {
+            if (v !== '' && v !== 'vscode' && tags.indexOf(v) === -1) { tags.push(v); }
+        });
+    }
     if (settings.enableVerboseBuildTag && tags.indexOf('verbose') === -1) { tags.push('verbose'); }
     if (settings.enableDelveBuildTag && tags.indexOf('delve') === -1) { tags.push('delve'); }
-    settings.runBuildTags.split(/[ ,]/).forEach((v, i, a) => {
+    settings.runBuildTags.split(/[ ,]+/).forEach((v, i, a) => {
         if (v !== '' && tags.indexOf(v) === -1) { tags.push(v); }
     });
     if (settings.enableVscodeBuildTag && tags.indexOf('vscode') === -1) { tags.push('vscode'); }
@@ -122,7 +134,7 @@ function buildTags(): string {
 }
 
 // see: https://stackoverflow.com/questions/43007267/how-to-run-a-system-command-from-vscode-extension
-export function launchMainProg(src: string, ...extraArgs: any[]) {
+export function launchMainProg(src: string, config?: any, ...extraArgs: any[]) {
     // const currFile = focusedEditingFilePath();
     // console.log("codelensAction.args:", args, 'file path:', currFile, 'src file:', src);
     const gomod = findGoMod(src);
@@ -137,11 +149,11 @@ export function launchMainProg(src: string, ...extraArgs: any[]) {
     const workDir = path.dirname(gomod);
     const mainGo = src;
     const mainGoDir = path.dirname(mainGo);
-    const tags = buildTags();
+    const tags = buildTags(config);
     const tagsArg = tags ? `-tags ${tags} ` : '';
     const sources = settings.runAsPackage ? mainGoDir : mainGo;
 
-    const cmd = `go run ${minSizeArg}${disArg}${verboseArg}${tagsArg} ${sources}`;
+    const cmd = `go run ${minSizeArg}${disArg}${verboseArg}${tagsArg} ${sources} ${config?.args?.join(' ')}`;
     console.log(`Sending command to terminal '${AppRunTerminalName}': ${cmd}`);
 
     // const execShell = (cmd: string) =>
