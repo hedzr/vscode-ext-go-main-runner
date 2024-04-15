@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.3]
+
+- fix bugs
+- refactor codes
+- add support for build tag 'vscode' and 'delve'
+- add support to '-v'
+- add supports to no-optimize and min-size
+
 ### [1.2.2]
 
 - fix wrong command name (for launch config status item)

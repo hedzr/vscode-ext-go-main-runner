@@ -2,7 +2,7 @@
   "name": "go-main-runner",
   "displayName": "Go Main Runner",
   "description": "run or debug main function in-place",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "publisher": "hedzr",
   "license": "Apache 2.0",
   "repository": {
@@ -79,16 +79,6 @@
         "category": "Go Main Runner"
       },
       {
-        "title": "Enable Run Mode When Picking Launch Configs",
-        "command": "go-main-runner.launchConfigs.pickForRun",
-        "category": "Go Main Runner"
-      },
-      {
-        "title": "Disable Run Mode When Picking Launch Configs (Enable Debug Mode)",
-        "command": "go-main-runner.launchConfigs.pickForDebug",
-        "category": "Go Main Runner"
-      },
-      {
         "title": "Run with Launch Configs...",
         "command": "go-main-runner.launchConfigs.runOrDebug",
         "category": "Go Main Runner"
@@ -133,54 +123,87 @@
         "go-main-runner.main.enableCodeLens": {
           "type": "boolean",
           "default": true,
-          "description": "Enable or disable Run/Debug shortcut links onto func main()"
+          "description": "Enable or disable Run/Debug shortcut links onto func main()",
+          "order": 0
         },
         "go-main-runner.main.run.asPackage": {
           "type": "boolean",
           "default": true,
           "title": "Run main func under package context",
-          "description": "Run main func under package context or not (default is running the single file)"
+          "description": "Run main func under package context or not (default is running the single file)",
+          "order": 100
         },
         "go-main-runner.main.run.tags.verbose": {
           "type": "boolean",
           "default": false,
-          "description": "add 'verbose' to build tags"
+          "description": "add 'verbose' to build tags",
+          "order": 106
         },
         "go-main-runner.main.run.tags.delve": {
           "type": "boolean",
           "default": false,
-          "description": "add 'delve' to build tags"
+          "description": "add 'delve' to build tags",
+          "order": 107
         },
         "go-main-runner.main.run.tags.vscode": {
           "type": "boolean",
           "default": false,
-          "description": "add 'vscode' to build tags"
+          "description": "add 'vscode' to build tags",
+          "order": 108
         },
         "go-main-runner.main.run.tags": {
           "type": "string",
           "default": "",
-          "description": "build tags, comma separated strings"
+          "description": "build tags, comma separated strings",
+          "order": 109
+        },
+        "go-main-runner.main.run.verbose": {
+          "type": "boolean",
+          "default": false,
+          "description": "add '-v' to 'go run'",
+          "order": 110
+        },
+        "go-main-runner.main.run.no-optmize": {
+          "type": "boolean",
+          "default": false,
+          "description": "add '-gcflags=all=\"-N -l\"' to 'go run'",
+          "order": 110
+        },
+        "go-main-runner.main.run.min-size": {
+          "type": "boolean",
+          "default": false,
+          "description": "add '-ldflags=\"-s -w\"' to 'go run'",
+          "order": 110
         },
         "go-main-runner.main.run.configs": {
           "type": "array",
           "default": [],
-          "description": "Not yet"
+          "description": "Not yet",
+          "order": 120
         },
-        "go-main-runner.launch.enableRunOrDebug": {
-          "type": "boolean",
-          "default": true,
-          "title": "Enable Run/Debug Mode",
-          "description": "Enable Run/Debug mode when picking launch configs from statusbar item."
+        "go-main-runner.launch.mode": {
+          "type": "string",
+          "enum": ["runInTerminal", "run", "debug"],
+          "enumDescriptions": [
+            "Go Run In Terminal window",
+            "Delve Run (vscode way)",
+            "Delve Debug (vscode way)"
+          ],
+          "default": "runInTerminal",
+          "description": "The mode of launching from config could be: runInTerminal, run, debug.",
+          "order": 200
         },
         "go-main-runner.launch.enableStatusItem": {
           "type": "boolean",
           "default": true,
-          "description": "Show/Hide statusbar item for picking launch configs"
+          "description": "Show/Hide statusbar item for picking launch configs",
+          "order": 220
         },
         "go-main-runner.launch.enableStatusItemOnce": {
           "type": "boolean",
           "default": true,
-          "description": "Hide statusbar item after first picked"
+          "description": "Hide statusbar item after first picked",
+          "order": 221
         }
       }
     }
