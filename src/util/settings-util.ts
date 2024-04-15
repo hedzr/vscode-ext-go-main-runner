@@ -266,10 +266,10 @@ export const settings = {
     },
     get runBuildTagsCmd(): string { return `${AppScopeName}.build-tags`; },
     get runBuildTags(): string {
-        return vscode.workspace.getConfiguration(AppScopeName).get<string>("main.run.tags", '');
+        return vscode.workspace.getConfiguration(AppScopeName).get<string>("main.run.tags.more", '');
     },
     set runBuildTags(b: string) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags", b, true);
+        vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.more", b, true);
     },
     get runConfigs(): any[] {
         return vscode.workspace.getConfiguration(AppScopeName).get<any[]>("main.run.configs", []);
