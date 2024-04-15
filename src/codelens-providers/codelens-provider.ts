@@ -80,11 +80,35 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 		context.subscriptions.push(vscode.commands.registerCommand(settings.disableCodeLensCmd, () => {
 			settings.enableCodeLens = false;
 		}));
+
 		context.subscriptions.push(vscode.commands.registerCommand(settings.enableVerboseBuildTagCmd, () => {
 			settings.enableVerboseBuildTag = true;
 		}));
 		context.subscriptions.push(vscode.commands.registerCommand(settings.disableVerboseBuildTagCmd, () => {
 			settings.enableVerboseBuildTag = false;
+		}));
+		context.subscriptions.push(vscode.commands.registerCommand(settings.toggleVerboseBuildTagCmd, () => {
+			settings.enableVerboseBuildTag = !settings.enableVerboseBuildTag;
+		}));
+
+		context.subscriptions.push(vscode.commands.registerCommand(settings.enableDelveBuildTagCmd, () => {
+			settings.enableDelveBuildTag = true;
+		}));
+		context.subscriptions.push(vscode.commands.registerCommand(settings.disableDelveBuildTagCmd, () => {
+			settings.enableDelveBuildTag = false;
+		}));
+		context.subscriptions.push(vscode.commands.registerCommand(settings.toggleDelveBuildTagCmd, () => {
+			settings.enableDelveBuildTag = !settings.enableDelveBuildTag;
+		}));
+
+		context.subscriptions.push(vscode.commands.registerCommand(settings.enableVscodeBuildTagCmd, () => {
+			settings.enableVscodeBuildTag = true;
+		}));
+		context.subscriptions.push(vscode.commands.registerCommand(settings.disableVscodeBuildTagCmd, () => {
+			settings.enableVscodeBuildTag = false;
+		}));
+		context.subscriptions.push(vscode.commands.registerCommand(settings.toggleVscodeBuildTagCmd, () => {
+			settings.enableVscodeBuildTag = !settings.enableVscodeBuildTag;
 		}));
 	}
 

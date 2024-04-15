@@ -113,6 +113,7 @@ function buildTags(): string {
         if (v !== '' && tags.indexOf(v) === -1) { tags.push(v); }
     });
     if (settings.enableVscodeBuildTag && tags.indexOf('vscode') === -1) { tags.push('vscode'); }
+    // console.log(`tags: verbose=${settings.enableVerboseBuildTag}, delve=${settings.enableDelveBuildTag}, vscode=${settings.enableVscodeBuildTag}`);
     buildTags = tags.join(',');
     // if (!/[ ,]?vscode[ ,]?/.test(buildTags)) {
     //     buildTags = `${buildTags.replace(/[ ,]+$/, '')},vscode`.replace(/^[ ,]+/, '');
@@ -246,6 +247,13 @@ export const settings = {
 
     get enableVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableVerbose`; },
     get disableVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableVerbose`; },
+    get toggleVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.toggleVerbose`; },
+    get enableDelveBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableDelve`; },
+    get disableDelveBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableDelve`; },
+    get toggleDelveBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.toggleDelve`; },
+    get enableVscodeBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableVscode`; },
+    get disableVscodeBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableVscode`; },
+    get toggleVscodeBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.toggleVscode`; },
     get enableVerboseBuildTag(): boolean {
         return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.verbose", false);
     },
