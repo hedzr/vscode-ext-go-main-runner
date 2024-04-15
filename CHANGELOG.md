@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.6]
+
+- fix 2 shortcuts
+- update readme for new keybindings
+- enable toasts for build tags shortcuts
+- run main func: retrieve tags and args from selected launch config
+
 ### [1.2.5]
 
 - add shortcut: build tag: toggle verbose command (<kbd>cmd+option+v</kbd>)

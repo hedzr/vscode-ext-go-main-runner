@@ -47,13 +47,23 @@ But you may specify buildTags at Go extension settings:
 And `vscode` will be appended implicitly into it automatically.
 
 Since v1.2.1, you can enable or disable `verbose` tag, or specify buildTags in settings.
+Since v1.2.2, you can enable or disable `delve` tag, or specify buildTags in settings.
+Since v1.2.3, you can enable or disable `vecode` tag, or specify buildTags in settings.
 
 ```json
 {
-  "go-main-runner.main.run.verbose": true,
-  "go-main-runner.main.run.tags": "hzwork,more"
+  "go-main-runner.main.run.tags.verbose": false,
+  "go-main-runner.main.run.tags.delve": false,
+  "go-main-runner.main.run.tags.vscode": true,
+  "go-main-runner.main.run.tags.more": "hzwork,more"
 }
 ```
+
+These sources will be inpected when building buildTags for `go run` command line:
+
+- settings `go.buildTags`
+- settings `ho-main-runner.main.run.tags.*`
+- `-tags` in `buildFlags` key, if a picked launch config in using
 
 #### Run as Package or Single File
 
@@ -94,6 +104,9 @@ As a tip, you don't need our launch config status item because there is a native
 
 But ours is another choice.
 
+#### Use `runInTerminal` mode with lsaunch config
+
+When you picked a launch config from our status item, its [tags] and [args] will be reused in `go run` command line.
 
 
 ### Tilde Folder in Terminal
