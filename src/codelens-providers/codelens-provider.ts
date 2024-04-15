@@ -24,6 +24,7 @@ class RunFileCodeLens extends FileCodeLens {
 		this.command = {
 			title: "▷ Run", // title: `$(debug-start) Run`,
 			tooltip: "Run main() function in Terminal Window",
+			// command: 'debug.startFromConfig',
 			command: settings.launchMainFuncCmd,
 			arguments: [this.file]
 		};
@@ -65,7 +66,8 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 	}
 
 	public install(context: vscode.ExtensionContext) {
-		cu.install(context);    // codelens helper wants a saved context to locate workspace folder
+		settings.install(context); //
+		cu.install(context);       // codelens helper wants a saved context to locate workspace folder
 
 		// see: https://code.visualstudio.com/api/references/document-selector
 		// context.subscriptions.push(vscode.languages.registerCodeLensProvider(AppLangId, codelensProvider));

@@ -1,6 +1,5 @@
 import * as vscode from 'vscode';
-import { Store, settings } from './settings-util';
-// import { AppScopeName } from './consts';
+import { LaunchMode, Store, focusedEditingFilePath, launchMainProg, runWithConfig, settings } from './settings-util';
 
 let launchConfigsStatusBarItem: vscode.StatusBarItem;
 let store: Store;
@@ -31,13 +30,13 @@ export function install(context: vscode.ExtensionContext) {
     }));
     // subscriptions.push(vscode.window.onDidChangeTextEditorSelection(updateStatusBarItem));
 
-    context.subscriptions.push(vscode.commands.registerCommand(settings.enableRunModeCmd, () => {
-        settings.enableRunOrDebug = true;
-    }));
+    // context.subscriptions.push(vscode.commands.registerCommand(settings.enableRunModeCmd, () => {
+    //     settings.enableRunOrDebug = true;
+    // }));
 
-    context.subscriptions.push(vscode.commands.registerCommand(settings.enableDebugModeCmd, () => {
-        settings.enableRunOrDebug = false;
-    }));
+    // context.subscriptions.push(vscode.commands.registerCommand(settings.enableDebugModeCmd, () => {
+    //     settings.enableRunOrDebug = false;
+    // }));
 
     context.subscriptions.push(vscode.commands.registerCommand(settings.enableStatusItemCmd, () => {
         settings.statusItemVisible = true;
@@ -76,15 +75,21 @@ export function install(context: vscode.ExtensionContext) {
  * Shows a pick list using window.showQuickPick().
  */
 export async function showQuickPickLaunchConfigsAndRun(_: vscode.ExtensionContext) {
-    // let i = 0;
+    // await openVscodeSettings(true, 'editor.formatOnSave');
+    // await openVscodeSettings(false, `${AppScopeName}.launch.enableRunOrDebug`);
+
     const launches = settings.launches;
+    const ws = vscode.workspace;
+    const focusedFileAbs = focusedEditingFilePath();
+    const focusedFile = ws.asRelativePath(focusedFileAbs);
     function wrapToString(l: any): vscode.QuickPickItem {
         return {
             ...l,
             toString(): string { return l.name; },
             label: l.name,
             kind: vscode.QuickPickItemKind.Default,
-            description: (l.name === store.selectedLaunchConfigName ? '(default)' : ''),
+            description: `(${ws.name}) ${(l.name === store.selectedLaunchConfigName ? '(default)' : '')}`,
+            detail: `${focusedFile}`
         };
     }
     const items = launches.map(it => wrapToString(it));
@@ -95,7 +100,8 @@ export async function showQuickPickLaunchConfigsAndRun(_: vscode.ExtensionContex
 
     // vscode.window.showInformationMessage(`To Be Run: ${result}`);
     if (result) {
-        const name = result.label;
+        const file = result;
+        const name = file.label;
         store.selectedLaunchConfigName = name;
 
         // let launchConfig = {
@@ -111,29 +117,34 @@ export async function showQuickPickLaunchConfigsAndRun(_: vscode.ExtensionContex
         // const debugCmd = 'vscode.startDebug';
         const debugCmd = 'workbench.action.debug.start';
         const runCmd = 'workbench.action.debug.run';
-        runWithConfig(settings.enableRunOrDebug ? runCmd : debugCmd, result);
+        const callback = () => {
+            if (settings.statusItemVisibleOnce) {
+                if (settings.picked) {
+                    launchConfigsStatusBarItem.hide();
+                }
+            }
+        };
+        switch (settings.launchMode) {
+            case LaunchMode.RunInTerminal:
+                launchMainProg(focusedFileAbs);
+                break;
+            case LaunchMode.Run:
+                runWithConfig(runCmd, file, callback);
+                break;
+            case LaunchMode.Debug:
+                runWithConfig(debugCmd, file, callback);
+                break;
+        }
+        // runWithConfig(settings.enableRunOrDebug ? runCmd : debugCmd, file);
     }
-}
-
-let picked = false;
-
-export function runWithConfig(runCmd: string, config?: any) {
-    vscode.commands.executeCommand(runCmd, config).then(() => {
-        // vscode.window.showInformationMessage('OK!');
-        picked = false;
-        launchConfigsStatusBarItem.hide();
-    }, err => {
-        console.log(err);
-        // vscode.window.showInformationMessage('Error: ' + err.message);
-    });
 }
 
 export async function updateStatusBarItems(context: vscode.ExtensionContext) {
     let vis = settings.statusItemVisible;
-    if (settings.statusItemVisibleOnce && picked) {
+    if (settings.statusItemVisibleOnce && settings.picked) {
         vis = false;
     }
-    console.log('vis:', vis, 'once:', settings.statusItemVisibleOnce, "picked:", picked);
+    console.log('vis:', vis, 'once:', settings.statusItemVisibleOnce, "picked:", settings.picked);
     doUpdateStatusBarItems(vis, store.selectedLaunchConfigName);
 }
 
