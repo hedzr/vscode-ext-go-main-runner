@@ -173,12 +173,14 @@
         "when": "editorTextFocus && editorLangId == go"
       },
       {
-        "key": "cmd+m cmd+n",
+        "key": "ctrl+m ctrl+n",
+        "mac": "cmd+m cmd+n",
         "command": "workbench.action.debug.run",
         "when": "debuggersAvailable && debugState != 'initializing' && editorLangId == go"
       },
       {
-        "key": "cmd+m cmd+b",
+        "key": "ctrl+m ctrl+b",
+        "mac": "cmd+m cmd+b",
         "command": "workbench.action.debug.start",
         "when": "debuggersAvailable && debugState == 'inactive'"
       }
