@@ -14,12 +14,11 @@ It is so unbelievable that's so hard to start running a program via `go run` wit
 
 This is why we build this extension.
 
-So we adds two links on top of `func main()` so that you can run/debug it without leaving editor and type command in terminal window.
+The first thing is we adds two links on top of `func main()`. clicking them to run/debug without leaving editor and type command in terminal window.
 
 ![image-20240411221538829](https://cdn.jsdelivr.net/gh/hzimg/blog-pics@master/uPic/image-20240411221538829.png)
 
 When you click `Run` button, we will launch the `main()` with `go run` in vscode integrated terminal window.
-
 Clicking `Debug` button causes a normal debugging session via `dlv`.
 
 Also a status button for vscode Launch Configs has been added since v1.2.0. It looks like:
@@ -46,8 +45,8 @@ But you may specify buildTags at Go extension settings:
 
 And `vscode` will be appended implicitly into it automatically.
 
-Since v1.2.1, you can enable or disable `verbose` tag, or specify buildTags in settings.
-Since v1.2.2, you can enable or disable `delve` tag, or specify buildTags in settings.
+Since v1.2.1, you can enable or disable `verbose` tag, or specify buildTags in settings.  
+Since v1.2.2, you can enable or disable `delve` tag, or specify buildTags in settings.  
 Since v1.2.3, you can enable or disable `vecode` tag, or specify buildTags in settings.
 
 ```json
@@ -62,12 +61,12 @@ Since v1.2.3, you can enable or disable `vecode` tag, or specify buildTags in se
 These sources will be inpected when building buildTags for `go run` command line:
 
 - settings `go.buildTags`
-- settings `ho-main-runner.main.run.tags.*`
+- settings `go-main-runner.main.run.tags.*`
 - `-tags` in `buildFlags` key, if a picked launch config in using
 
 #### Run as Package or Single File
 
-You can launch main() function from this package, or only `main.go` file by setting with:
+You can launch `main()` function with package mode, or only single `main.go` file:
 
 ```json
 {
@@ -77,9 +76,9 @@ You can launch main() function from this package, or only `main.go` file by sett
 
 ### Launch with config
 
-> **WHY**: We added this feature to avoid switching between sidebars ('Explorer' and 'Run or Debug') at first time.
+> **WHY**: We added this feature to avoid switching between sidebars ('Explorer' and 'Run or Debug') at first time. Shortcut players have never seen me.
 
-The new status item allows picking a launch config and 'Run' (not debug) shortly.
+The new status item allows picking a launch config and 'Run' (not debug) it shortly.
 
 This button will hide itself after first picked, since a native status item can be shown by vscode.
 But if you desire a Run button rather than debug sth, you may disable it in setting:
@@ -108,6 +107,13 @@ But ours is another choice.
 
 When you picked a launch config from our status item, its [tags] and [args] will be reused in `go run` command line.
 
+And another two modes, "run" and "debug", runs the target within dlv dap mode, just like launching by vscode launch configs and launch.json.
+
+```json
+{
+  "go-main-runner.launch.mode": "runInTerminal" // or "run" and "debug"
+}
+```
 
 ### Tilde Folder in Terminal
 
@@ -116,7 +122,7 @@ When you picked a launch config from our status item, its [tags] and [args] will
 Since v1.2.1, we recognize 'file:line' pattern in terminal, even if it's a file staring with tilde folder.
 
 In zsh, a tilde folder is a hashed tag which can be mapped to the real path. For example,
-`~work/rust.work/a.go` might be resolved to `/Volumes/VolWork/workspaces/go.work/a.go`.
+`~work/go.work/a.go` might be resolved to `/Volumes/VolWork/workspaces/go.work/a.go`.
 If you have defined a hash link with:
 
 ```bash
@@ -130,6 +136,8 @@ All defined hashed pairs can be found generally by invoking:
 ```bash
 hash -d
 ```
+
+There is a old post (in chinese only) to introduce more about Tilde Folder/Named Direcotries: [tilde expansion and named directories](https://hedzr.com/devops/shell/tilde-expansion-and-named-directories/).
 
 ## Keybindings
 
@@ -146,7 +154,7 @@ These keybindings are predefined:
 | Go Main Runner: Toggle Delve BuildTag      | <kbd>⌥⌘D</kbd>   | <kbd>⇧^D</kbd>   |
 | Go Main Runner: Toggle Verbose BuildTag    | <kbd>⌥⌘V</kbd>   | <kbd>⇧^V</kbd>   |
 
-Note that vscode has builtin keybindings:
+Note that in vscode there were two builtin keybindings:
 
 | Command                        | Keys           |
 | ------------------------------ | -------------- |
@@ -161,7 +169,7 @@ Note that vscode has builtin keybindings:
 
 This command enables codelens support, it causes detecting `func main()` and the links binding to them to execute.
 
-Go Main Runner: Disable CodeLens
+#### Go Main Runner: Disable CodeLens
 
 The opposition.
 
