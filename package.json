@@ -2,7 +2,7 @@
   "name": "go-main-runner",
   "displayName": "Go Main Runner",
   "description": "run or debug main function in-place",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "publisher": "hedzr",
   "license": "Apache 2.0",
   "repository": {

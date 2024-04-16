@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.8]
+
+- improved regexp for tilde folder
+- fix readme
+
+### [1.2.7]
+
+- fix changelog and readme
+
 ### [1.2.6]
 
 - fix 2 shortcuts
