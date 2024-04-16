@@ -191,7 +191,7 @@ export default class Term {
 		(<any>vscode.window).registerTerminalLinkProvider({
 			provideTerminalLinks: (context: any, token: vscode.CancellationToken) => {
 				// Detect the first instance of the word "link" if it exists and linkify it
-				const re = /(~.+)\:(\d+)/ig;
+				const re = /(~[^:]+)\:(\d+)/ig; // only match on tilde folders, normal `file:line` are ignored here.
 				const arr = re.exec(context.line as string);
 				if (arr === null) {
 					return [];
