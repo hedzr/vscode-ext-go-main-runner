@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { LaunchMode, Store, focusedEditingFilePath, launchMainProg, runWithConfig, settings } from './settings-util';
+import { LaunchMode, Store, focusedEditingFilePath, launchMainProg, runWithConfig, settings, showLaunchConfigsAndStartDebug } from './settings-util';
+import { AppScopeName } from './consts';
 
 let launchConfigsStatusBarItem: vscode.StatusBarItem;
 let store: Store;
@@ -7,6 +8,10 @@ let store: Store;
 // export function install({ subscriptions }: vscode.ExtensionContext) {
 export function install(context: vscode.ExtensionContext) {
     store = new Store(context);
+
+    context.subscriptions.push(vscode.commands.registerCommand(`${AppScopeName}.launchConfigs.showPicker`, () => {
+        showLaunchConfigsAndStartDebug();
+    }));
 
     // register a command that is invoked when the status bar
     // item is selected
@@ -139,7 +144,7 @@ export async function showQuickPickLaunchConfigsAndRun(_: vscode.ExtensionContex
     }
 }
 
-export async function updateStatusBarItems(context: vscode.ExtensionContext) {
+export async function updateStatusBarItems(_: vscode.ExtensionContext) {
     let vis = settings.statusItemVisible;
     if (settings.statusItemVisibleOnce && settings.picked) {
         vis = false;

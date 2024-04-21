@@ -91,6 +91,54 @@
       },
 
       {
+        "title": "Enable Docker BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.enableDocker",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Disable Docker BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.disableDocker",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Toggle Docker BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.toggleDocker",
+        "category": "Go Main Runner"
+      },
+
+      {
+        "title": "Enable K8s BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.enableK8s",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Disable Delve BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.disableK8s",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Toggle K8s BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.toggleK8s",
+        "category": "Go Main Runner"
+      },
+
+      {
+        "title": "Enable Istio BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.enableIstio",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Disable Istio BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.disableIstio",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Toggle Istio BuildTag",
+        "command": "go-main-runner.codeLens.buildTags.toggleIstio",
+        "category": "Go Main Runner"
+      },
+
+      {
         "title": "Enable Vscode BuildTag",
         "command": "go-main-runner.codeLens.buildTags.enableVscode",
         "category": "Go Main Runner"
@@ -119,6 +167,11 @@
       {
         "title": "Run with Launch Configs...",
         "command": "go-main-runner.launchConfigs.runOrDebug",
+        "category": "Go Main Runner"
+      },
+      {
+        "title": "Debug...",
+        "command": "go-main-runner.launchConfigs.showPicker",
         "category": "Go Main Runner"
       }
     ],
@@ -158,6 +211,24 @@
         "command": "go-main-runner.codeLens.buildTags.toggleDelve",
         "key": "ctrl+shift+d",
         "mac": "cmd+alt+d",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "go-main-runner.codeLens.buildTags.toggleDocker",
+        "key": "ctrl+shift+r",
+        "mac": "cmd+alt+r",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "go-main-runner.codeLens.buildTags.toggleK8s",
+        "key": "ctrl+shift+k",
+        "mac": "cmd+alt+k",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "go-main-runner.codeLens.buildTags.toggleIstio",
+        "key": "ctrl+shift+i",
+        "mac": "cmd+alt+i",
         "when": "editorTextFocus"
       },
       {
@@ -215,41 +286,59 @@
           "description": "add 'delve' to build tags",
           "order": 107
         },
+        "go-main-runner.main.run.tags.docker": {
+          "type": "boolean",
+          "default": false,
+          "description": "add 'docker' to build tags",
+          "order": 108
+        },
+        "go-main-runner.main.run.tags.k8s": {
+          "type": "boolean",
+          "default": false,
+          "description": "add 'k8s' to build tags",
+          "order": 108
+        },
+        "go-main-runner.main.run.tags.istio": {
+          "type": "boolean",
+          "default": false,
+          "description": "add 'istio' to build tags",
+          "order": 109
+        },
         "go-main-runner.main.run.tags.vscode": {
           "type": "boolean",
           "default": false,
           "description": "add 'vscode' to build tags",
-          "order": 108
+          "order": 111
         },
         "go-main-runner.main.run.tags.more": {
           "type": "string",
           "default": "",
           "description": "build tags, comma separated strings",
-          "order": 109
+          "order": 119
         },
         "go-main-runner.main.run.verbose": {
           "type": "boolean",
           "default": false,
           "description": "add '-v' to 'go run'",
-          "order": 110
+          "order": 150
         },
         "go-main-runner.main.run.no-optmize": {
           "type": "boolean",
           "default": false,
           "description": "add '-gcflags=all=\"-N -l\"' to 'go run'",
-          "order": 110
+          "order": 160
         },
         "go-main-runner.main.run.min-size": {
           "type": "boolean",
           "default": false,
           "description": "add '-ldflags=\"-s -w\"' to 'go run'",
-          "order": 110
+          "order": 161
         },
         "go-main-runner.main.run.configs": {
           "type": "array",
           "default": [],
           "description": "Not yet",
-          "order": 120
+          "order": 190
         },
         "go-main-runner.launch.mode": {
           "type": "string",

@@ -46,8 +46,8 @@ export async function openVscodeSettings(jsonDirectly: boolean = false, filter =
     await vscode.commands.executeCommand('workbench.action.openSettings', filter);
 }
 
-export function settingsActionSearch() {
-    vscode.commands.executeCommand('settings.action.search');
+export function settingsActionSearch(...args: any[]) {
+    vscode.commands.executeCommand('settings.action.search', ...args);
 }
 
 export function findGoMod(fromPath: string): string {
@@ -72,20 +72,41 @@ export enum LaunchMode {
     Debug = 'debug',
 }
 
-export function debug() {
-    vscode.commands.executeCommand('workbench.action.debug.start');
+export function debug(...args: any[]) {
+    vscode.commands.executeCommand('workbench.action.debug.start', ...args);
 }
 
-export function run() {
-    vscode.commands.executeCommand('workbench.action.debug.run');
+export function run(...args: any[]) {
+    vscode.commands.executeCommand('workbench.action.debug.run', ...args);
 }
 
-export function debugFromConfig() {
-    vscode.commands.executeCommand('workbench.action.debug.selectandstart');
+export function debugFromConfig(...args: any[]) {
+    vscode.commands.executeCommand('workbench.action.debug.selectandstart', ...args);
 }
 
-export function runFromConfig() {
-    vscode.commands.executeCommand('debug.startFromConfig');
+export function showLaunchConfigsAndStartDebug() {
+    // debugFromConfig();
+    showLaunchConfigsAndStart();
+}
+
+export function showLaunchConfigsAndStart() {
+    showQuickOpen('debug ');
+}
+
+export function showQuickOpen(...args: any[]) {
+    vscode.commands.executeCommand('workbench.action.quickOpen', ...args);
+}
+
+export function showCommands(...args: any[]) {
+    // if (!args) {
+    //     args = ['>'];
+    // }
+    vscode.commands.executeCommand('workbench.action.showCommands', ...args);
+}
+
+export function selectConfigAndRun(...args: any[]) {
+    vscode.commands.executeCommand('debug.startFromConfig', ...args);
+    // Error: 'launch.json' does not exist for passed workspace folder
 }
 
 export function runWithConfig(runCmd: string, config?: any, callback?: () => void | null) {
@@ -113,7 +134,7 @@ function buildTags(config?: any): string {
     buildTags.split(/[ ,]+/).forEach((v, i, a) => {
         if (v !== '' && v !== 'vscode' && tags.indexOf(v) === -1) { tags.push(v); }
     });
-    let matches = /-tags ['"]?([^'" ]+)/.exec(config?.buildFlags)
+    let matches = /-tags ['"]?([^'" ]+)/.exec(config?.buildFlags);
     if (matches !== null) {
         matches[1].split(/[ ,]+/).forEach((v, i, a) => {
             if (v !== '' && v !== 'vscode' && tags.indexOf(v) === -1) { tags.push(v); }
@@ -175,10 +196,16 @@ export function launchMainProg(src: string, config?: any, ...extraArgs: any[]) {
 }
 
 let terminalOperator: Term;
-
-export const settings = {
+let privates = {
     picked: false,
     pickedConfigName: '',
+};
+
+export const settings = {
+    get picked() { return privates.picked; },
+    set picked(b: boolean) { privates.picked = b; },
+    get pickedConfigName() { return privates.pickedConfigName; },
+    set pickedConfigName(v: string) { privates.pickedConfigName = v; },
 
     install(c: vscode.ExtensionContext) {
         // context = c;
@@ -241,82 +268,68 @@ export const settings = {
     get disableCodeLensCmd(): string { return `${AppScopeName}.codeLens.disable`; },
     get codeLensActionCmd(): string { return `${AppScopeName}.codeLens.runOrDebug`; },
     get launchMainFuncCmd(): string { return this.codeLensActionCmd; },
-    get enableCodeLens(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.enableCodeLens", true);
-    },
-    set enableCodeLens(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.enableCodeLens", b, true);
-    },
+
+    get enableCodeLens(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.enableCodeLens", true); },
+    set enableCodeLens(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.enableCodeLens", b, true); },
 
     get runAsPackageCmd(): string { return `${AppScopeName}.codeLens.runAsPackage`; },
     get runAsSingleFileCmd(): string { return `${AppScopeName}.codeLens.runAsSingleFile`; },
-    get runAsPackage(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.asPackage", true);
-    },
-    set runAsPackage(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.asPackage", b, true);
-    },
+    get runAsPackage(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.asPackage", true); },
+    set runAsPackage(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.asPackage", b, true); },
 
     get enableVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableVerbose`; },
     get disableVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableVerbose`; },
     get toggleVerboseBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.toggleVerbose`; },
+
     get enableDelveBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableDelve`; },
     get disableDelveBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableDelve`; },
     get toggleDelveBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.toggleDelve`; },
+
+    get enableDockerBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableDocker`; },
+    get disableDockerBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableDocker`; },
+    get toggleDockerBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.toggleDocker`; },
+
+    get enableK8sBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableK8s`; },
+    get disableK8sBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableK8s`; },
+    get toggleK8sBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.toggleK8s`; },
+
+    get enableIstioBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableIstio`; },
+    get disableIstioBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableIstio`; },
+    get toggleIstioBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.toggleIstio`; },
+
     get enableVscodeBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.enableVscode`; },
     get disableVscodeBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.disableVscode`; },
     get toggleVscodeBuildTagCmd(): string { return `${AppScopeName}.codeLens.buildTags.toggleVscode`; },
-    get enableVerboseBuildTag(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.verbose", false);
-    },
-    set enableVerboseBuildTag(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.verbose", b, true);
-    },
-    get enableDelveBuildTag(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.delve", false);
-    },
-    set enableDelveBuildTag(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.delve", b, true);
-    },
-    get enableVscodeBuildTag(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.vscode", true);
-    },
-    set enableVscodeBuildTag(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.vscode", b, true);
-    },
-    get runBuildTagsCmd(): string { return `${AppScopeName}.build-tags`; },
-    get runBuildTags(): string {
-        return vscode.workspace.getConfiguration(AppScopeName).get<string>("main.run.tags.more", '');
-    },
-    set runBuildTags(b: string) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.more", b, true);
-    },
-    get runConfigs(): any[] {
-        return vscode.workspace.getConfiguration(AppScopeName).get<any[]>("main.run.configs", []);
-    },
-    set runConfigs(b: any[]) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.configs", b, true);
-    },
 
-    get gorunVerbose(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.verbose", false);
-    },
-    set gorunVerbose(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.verbose", b, true);
-    },
-    get gorunMinSize(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.min-size", true);
-    },
-    set gorunMinSize(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.min-size", b, true);
-    },
-    get disableLocalInlineOptimizations(): boolean {
-        return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.no-optimize", false);
-    },
-    set disableLocalInlineOptimizations(b: boolean) {
-        vscode.workspace.getConfiguration(AppScopeName).update("main.run.no-optimize", b, true);
-    },
-};
+    get enableVerboseBuildTag(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.verbose", false); },
+    set enableVerboseBuildTag(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.verbose", b, true); },
+    get enableDelveBuildTag(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.delve", false); },
+    set enableDelveBuildTag(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.delve", b, true); },
+    get enableDockerBuildTag(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.docker", false); },
+    set enableDockerBuildTag(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.docker", b, true); },
+    get enableK8sBuildTag(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.k8s", false); },
+    set enableK8sBuildTag(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.k8s", b, true); },
+    get enableIstioBuildTag(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.istio", false); },
+    set enableIstioBuildTag(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.istio", b, true); },
+    get enableVscodeBuildTag(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.tags.vscode", true); },
+    set enableVscodeBuildTag(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.vscode", b, true); },
+
+    get runBuildTagsCmd(): string { return `${AppScopeName}.build-tags`; },
+    get runBuildTags(): string { return vscode.workspace.getConfiguration(AppScopeName).get<string>("main.run.tags.more", ''); },
+    set runBuildTags(b: string) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.tags.more", b, true); },
+    get runConfigs(): any[] { return vscode.workspace.getConfiguration(AppScopeName).get<any[]>("main.run.configs", []); },
+    set runConfigs(b: any[]) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.configs", b, true); },
+
+    get gorunVerbose(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.verbose", false); },
+    set gorunVerbose(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.verbose", b, true); },
+    get gorunMinSize(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.min-size", true); },
+    set gorunMinSize(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.min-size", b, true); },
+    get disableLocalInlineOptimizations(): boolean { return vscode.workspace.getConfiguration(AppScopeName).get<boolean>("main.run.no-optimize", false); },
+    set disableLocalInlineOptimizations(b: boolean) { vscode.workspace.getConfiguration(AppScopeName).update("main.run.no-optimize", b, true); },
+
+} as const;
+
+export type TSettings = keyof typeof settings;
 
 export class Store {
     context?: vscode.ExtensionContext;
@@ -333,4 +346,5 @@ export class Store {
     public set selectedLaunchConfigName(s: string) {
         this.context?.workspaceState.update(`${AppScopeName}.selectedLaunchConfig`, s);
     }
-}
+};
+
