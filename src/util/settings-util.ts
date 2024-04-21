@@ -173,8 +173,9 @@ export function launchMainProg(src: string, config?: any, ...extraArgs: any[]) {
     const tags = buildTags(config);
     const tagsArg = tags ? `-tags ${tags} ` : '';
     const sources = settings.runAsPackage ? mainGoDir : mainGo;
+    const args = (config?.args ?? []).join(' ');
 
-    const cmd = `go run ${minSizeArg}${disArg}${verboseArg}${tagsArg} ${sources} ${config?.args?.join(' ')}`;
+    const cmd = `go run ${minSizeArg}${disArg}${verboseArg}${tagsArg} ${sources} ${args}`;
     console.log(`Sending command to terminal '${AppRunTerminalName}': ${cmd}`);
 
     // const execShell = (cmd: string) =>
