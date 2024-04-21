@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.9]
+
+- added supports to more build tags: `docker`, `k8s` and `istio`.
+- improve codes.
+- fixed 'undefined' at end of go run cmdline
+
 ### [1.2.8]
 
 - improved regexp for tilde folder

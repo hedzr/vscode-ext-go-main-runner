@@ -8,7 +8,7 @@ Here's primary features:
 
 - Start `go run` on a main func in editor
 - Easily play vscode launch configs at first time.
-- Support tilde folder link in Terminal window.
+- Support tilde folder links in Terminal window.
 
 It is so unbelievable that's so hard to start running a program via `go run` within Golang developing in vscode.
 
@@ -45,14 +45,18 @@ But you may specify buildTags at Go extension settings:
 
 And `vscode` will be appended implicitly into it automatically.
 
-Since v1.2.1, you can enable or disable `verbose` tag, or specify buildTags in settings.  
-Since v1.2.2, you can enable or disable `delve` tag, or specify buildTags in settings.  
-Since v1.2.3, you can enable or disable `vecode` tag, or specify buildTags in settings.
+Since v1.2.1, you can enable or disable `verbose` tag.  
+Since v1.2.2, you can enable or disable `delve` tag.  
+Since v1.2.3, you can enable or disable `vecode` tag.
+Since v1.2.9, you can enable or disable `docker`, `k8s` and `istio`.
 
 ```json
 {
   "go-main-runner.main.run.tags.verbose": false,
   "go-main-runner.main.run.tags.delve": false,
+  "go-main-runner.main.run.tags.docker": false,
+  "go-main-runner.main.run.tags.k8s": false,
+  "go-main-runner.main.run.tags.istio": false,
   "go-main-runner.main.run.tags.vscode": true,
   "go-main-runner.main.run.tags.more": "hzwork,more"
 }
@@ -105,13 +109,19 @@ But ours is another choice.
 
 #### Use `runInTerminal` mode with lsaunch config
 
-When you picked a launch config from our status item, its [tags] and [args] will be reused in `go run` command line.
-
-And another two modes, "run" and "debug", runs the target within dlv dap mode, just like launching by vscode launch configs and launch.json.
+`runInTerminal` mode means that current file in editor will be launched into terminal by `go run`, and the selected launch config will be applied if necessary: the [tags] and [args] in the launch config will be reused in `go run` command line.
 
 ```json
 {
   "go-main-runner.launch.mode": "runInTerminal" // or "run" and "debug"
+}
+```
+
+And another two modes, `run` and `debug`, runs the target within dlv dap mode, just like launching by vscode launch configs and launch.json.
+
+```json
+{
+  "go-main-runner.launch.mode": "debug" // this is default behavior of vscode
 }
 ```
 
@@ -153,6 +163,9 @@ These keybindings are predefined:
 | Go Main Runner: Run with Launch Configs... | <kbd>⌘M ⌘L</kbd> | <kbd>^M ^L</kbd> |
 | Go Main Runner: Toggle Delve BuildTag      | <kbd>⌥⌘D</kbd>   | <kbd>⇧^D</kbd>   |
 | Go Main Runner: Toggle Verbose BuildTag    | <kbd>⌥⌘V</kbd>   | <kbd>⇧^V</kbd>   |
+| Go Main Runner: Toggle Docker BuildTag     | <kbd>⌥⌘R</kbd>   | <kbd>⇧^R</kbd>   |
+| Go Main Runner: Toggle K8s BuildTag        | <kbd>⌥⌘K</kbd>   | <kbd>⇧^K</kbd>   |
+| Go Main Runner: Toggle Istio BuildTag      | <kbd>⌥⌘I</kbd>   | <kbd>⇧^I</kbd>   |
 
 Note that in vscode there were two builtin keybindings:
 
@@ -184,6 +197,16 @@ Enable/disable `-tags verbose`. Shortcut is <kbd>⌥⌘V</kbd> (Or <kbd>⇧^V</k
 `verbose` is used to enable `slog.Verbose()` logging. The `slog.Verbose` is an enhanced feature of `hedzr/logg/slog`, which is optimized and disable in normal build but can print to logging device only if `verbose` tag defined.
 
 We assume you will code yours following this principle. If so, this command takes benifit to you to *debug* the main program offline (by `go run`).
+
+#### Go Main Runner: Toggle Docker/K8s/Istio BuildTag
+
+Enable/disable `-tags docker` (or `k8s`, `istio`).
+
+These tags are partial of [hedzr/is]/states/buildtags.
+
+#### Go Main Runner: Debug...
+
+This command is a replacement of `Debug: Start Debugging...`.
 
 ## For more information
 
