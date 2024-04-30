@@ -12,10 +12,9 @@
 				"reveal": "never",
 				"group": "watchers"
 			},
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
+			"group": "build",
+			"label": "npm: watch",
+			"detail": "webpack --watch"
 		},
 		{
 			"type": "npm",
@@ -35,6 +34,17 @@
 				"npm: watch-tests"
 			],
 			"problemMatcher": []
+		},
+		{
+			"type": "npm",
+			"script": "compile",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"problemMatcher": [],
+			"label": "npm: compile",
+			"detail": "typescript compile"
 		}
 	]
 }
