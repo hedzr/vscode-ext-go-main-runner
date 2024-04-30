@@ -20,7 +20,7 @@
     "theme": "light"
   },
   "engines": {
-    "vscode": "^1.73.0"
+    "vscode": "^1.75.0"
   },
   "categories": [
     "Other","Debuggers","Programming Languages","Testing"
