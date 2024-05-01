@@ -245,6 +245,8 @@ export class launchableObj {
                 scope ?? vscode.TaskScope.Workspace,
                 source ?? '',
                 this.cmdline,
+                undefined,
+                []
             );
         }
         return undefined;
