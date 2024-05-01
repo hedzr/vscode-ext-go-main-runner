@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.11]
+
+- fix params passing for main run task
+
 ### [1.2.10]
 
 - run `main.go` with `asTask` mode: add support to vscode Task so that you can rerun it easier.
