@@ -45,6 +45,14 @@
 			"problemMatcher": [],
 			"label": "npm: compile",
 			"detail": "typescript compile"
+		},
+		{
+			"label": "vsce publish",
+			"type": "shell",
+			"command": "vsce",
+			"args": ["publish", "--no-dependencies"],
+			"problemMatcher": [],
+			"detail": "publish to vscode market"
 		}
 	]
 }
