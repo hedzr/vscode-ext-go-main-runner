@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.10]
+
+- run `main.go` with `asTask` mode: add support to vscode Task so that you can rerun it easier.
+- improve codes.
+- move to vscode v1.75+.
+
 ### [1.2.9]
 
 - added supports to more build tags: `docker`, `k8s` and `istio`.

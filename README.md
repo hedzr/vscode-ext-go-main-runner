@@ -2,13 +2,20 @@
 
 Run or Debug golang main function in-place.
 
+## Requirements
+
+- Visual Studio Code 1.75 or newer (or editors compatible with VS Code 1.75+ APIs)
+- Go 1.18 or newer
+
 ## Features
 
 Here's primary features:
 
-- Start `go run` on a main func in editor
+- Start `go run` on a main func in editor: `runInTerminal` or `asTask`.
 - Easily play vscode launch configs at first time.
 - Support tilde folder links in Terminal window.
+
+> See the [CHANGELOG](https://marketplace.visualstudio.com/items/hedzr.go-main-runner/changelog).
 
 It is so unbelievable that's so hard to start running a program via `go run` within Golang developing in vscode.
 
@@ -77,6 +84,48 @@ You can launch `main()` function with package mode, or only single `main.go` fil
   "go-main-runner.main.run.asPackage": false
 }
 ```
+
+#### Run Mode
+
+Since v1.2.10, we bring a new feature to run main.go as a [vscode Task]. You could enable it with `settings.json`:
+
+```json
+{
+  // "go-main-runner.main.run.mode": "runInTerminal",
+  "go-main-runner.main.run.mode": "asTask",
+}
+```
+
+In this mode, clicking `Run` beyond `func main` will start a task.
+
+It is a normal vscode Task, so you can make it concrete as a task.json, A sample `task.json` might be:
+
+```json
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "go-main-runner",
+			"task": "go-main-run ./cli/rd",
+			"problemMatcher": [],
+			"label": "./cli/rd: go-main-run ./cli/rd"
+		}
+	]
+}
+```
+
+We recommend it because you can rerun it without switching to the `main.go`: You could request a keybinding to `Tasks: Rerun Last Task`. Our private `keybindings.json` is a reference:
+
+```json
+[
+    {
+      "key": "cmd+; cmd+;",
+      "command": "workbench.action.tasks.reRunTask"
+    }
+]
+```
+
+It is useful while you are invoking `main.go` again and again.
 
 ### Launch with config
 
@@ -216,3 +265,11 @@ This command is a replacement of `Debug: Start Debugging...`.
 * [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
 
 **Enjoy!**
+
+## Contributing
+
+Welcome.
+
+## License
+
+[Apache 2.0](https://github.com/hedzr/vscode-ext-go-main-runner/blob/master/LICENSE)
