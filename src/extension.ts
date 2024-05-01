@@ -2,13 +2,15 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 // import { ExtensionContext, languages, commands, Disposable, workspace } from 'vscode';
-import { CodelensProvider } from './codelens-providers/codelens-provider';
+import { CodelensProvider } from './providers/codelens-provider';
+import * as taskProvider from './providers/task-provider';
 // import * as cu from './util/codelens-util';
 // import * as sbar from './util/sbar-util';
 // import { config } from './util/settings-util';
 // import { AppScopeName, GolangId } from './util/consts';
 
 // let disposables: Disposable[] = [];
+let gorunTaskProvider: vscode.Disposable | undefined;
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -36,6 +38,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 	const codelensProvider = new CodelensProvider();
 	codelensProvider.install(context);
+	gorunTaskProvider = taskProvider.install(context);
 
 	// console.log(context.storageUri);
 	// console.log(config.launches);
@@ -48,4 +51,7 @@ export function deactivate() {
 	// 	disposables.forEach(item => item.dispose());
 	// }
 	// disposables = [];
+	if (gorunTaskProvider) {
+		gorunTaskProvider.dispose();
+	}
 }

@@ -267,12 +267,19 @@
           "description": "Enable or disable Run/Debug shortcut links onto func main()",
           "order": 0
         },
+        "go-main-runner.main.run.mode": {
+          "type": "string",
+          "enum": ["runInTerminal", "asTask"],
+          "default": "asTask",
+          "description": "run mode of 'go run'",
+          "order": 100
+        },
         "go-main-runner.main.run.asPackage": {
           "type": "boolean",
           "default": true,
           "title": "Run main func under package context",
           "description": "Run main func under package context or not (default is running the single file)",
-          "order": 100
+          "order": 101
         },
         "go-main-runner.main.run.tags.verbose": {
           "type": "boolean",
@@ -365,7 +372,26 @@
           "order": 221
         }
       }
-    }
+    },
+
+    "taskDefinitions": [
+      {
+          "type": "go-main-runner",
+          "required": [
+              "task"
+          ],
+          "properties": {
+              "task": {
+                  "type": "string",
+                  "description": "The Go Run task to customize"
+              },
+              "file": {
+                  "type": "string",
+                  "description": "The Go source file or folder that provides the task. Can be omitted."
+              }
+          }
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "pnpm run package",

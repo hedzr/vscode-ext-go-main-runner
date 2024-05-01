@@ -17,8 +17,42 @@ export class CodePathConfig {
     nodePath: string = '';
 }
 
+abstract class Base {
 
-export default abstract class Path {
+    public static normalize(path: string): string { return path.normalize(path); }
+    public static join(...paths: string[]): string { return path.join(...paths); }
+    public static resolve(...paths: string[]): string { return path.resolve(...paths); }
+
+    public static isAbsolute(_path: string): boolean { return path.isAbsolute(_path); }
+
+    public static relative(from: string, to: string): string { return path.relative(from, to); }
+    public static dirname(_path: string): string { return path.dirname(_path); }
+    public static basename(_path: string): string { return path.basename(_path); }
+    public static extname(_path: string): string { return path.extname(_path); }
+
+    public readonly sep = path.sep;
+    public readonly delimiter = path.delimiter;
+
+    public static parse(_path: string): path.ParsedPath { return path.parse(_path); }
+    public static format(pathObject: path.FormatInputPathObject): string { return path.format(pathObject); }
+    public static toNamespacedPath(_path: string): string { return path.toNamespacedPath(_path); }
+
+    public readonly posix = path.posix;
+    public readonly win32 = path.win32;
+
+    public static exists(file: string): Promise<boolean> {
+        return new Promise<boolean>((resolve, _reject) => {
+            fs.exists(file, (value) => {
+                resolve(value);
+            });
+        });
+    }
+
+    public static existsSync(file: string): boolean { return fs.existsSync(file); }
+
+};
+
+export default abstract class Path extends Base {
 
     /**
      * 
@@ -117,7 +151,7 @@ export default abstract class Path {
     }
 
     public static resolve(...paths: string[]): string {
-        return this.normalized(path.resolve(...paths));
+        return this.normalized(super.resolve(...paths));
     }
 
     /**
@@ -125,7 +159,7 @@ export default abstract class Path {
      * @returns {string}
      */
     public static join(...paths: string[]): string {
-        return this.normalized(path.join(...paths));
+        return this.normalized(super.join(...paths));
     }
 
     /**
