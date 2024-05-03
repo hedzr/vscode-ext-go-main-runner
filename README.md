@@ -21,7 +21,7 @@ It is so unbelievable that's so hard to start running a program via `go run` wit
 
 This is why we build this extension.
 
-The first thing is we adds two links on top of `func main()`. clicking them to run/debug without leaving editor and type command in terminal window.
+The first thing is we added two links on top of `func main()`. Clicking them to run/debug without leaving editor and type command in terminal window.
 
 ![image-20240411221538829](https://cdn.jsdelivr.net/gh/hzimg/blog-pics@master/uPic/image-20240411221538829.png)
 
