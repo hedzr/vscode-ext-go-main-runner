@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.12]
+
+- upgrade deps
+- added missed declaration to [VS Code Go extension](https://marketplace.visualstudio.com/items?itemName=golang.go)
+- improved main func test regexp
+
 ### [1.2.11]
 
 - fix params passing for main run task

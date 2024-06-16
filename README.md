@@ -6,6 +6,8 @@ Run or Debug golang main function in-place.
 
 - Visual Studio Code 1.75 or newer (or editors compatible with VS Code 1.75+ APIs)
 - Go 1.18 or newer
+- Visual Studio Code Extensions:
+  - [VS Code Go extension](https://marketplace.visualstudio.com/items?itemName=golang.go)
 
 ## Features
 
