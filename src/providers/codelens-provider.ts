@@ -11,8 +11,8 @@ import { TSettings, settings } from '../util/settings-util';
 // 	[index: number]: T;
 // }
 
-type func4Map = () => void;
-type funcMap = Map<string, func4Map>;
+// type func4Map = () => void;
+// type funcMap = Map<string, func4Map>;
 
 function getValue<T, K extends keyof T>(data: T, key: K) {
 	return data[key];
@@ -87,7 +87,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 
 	constructor() {
 		// see: https://regex101.com/r/BVRyIR/1
-		this.regex = /(?=\n?)func main\(\) (.*)/g;
+		this.regex = /^func main\(\) (.*)/gm;
 		// this.regex = /(.+)/g;
 
 		vscode.workspace.onDidChangeConfiguration((_) => {
