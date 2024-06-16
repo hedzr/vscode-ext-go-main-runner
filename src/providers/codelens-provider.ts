@@ -142,10 +142,11 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 		}));
 	}
 
-	public provideCodeLenses(document: vscode.TextDocument, token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
+	public provideCodeLenses(document: vscode.TextDocument, _token: vscode.CancellationToken): vscode.CodeLens[] | Thenable<vscode.CodeLens[]> {
 		if (settings.enableCodeLens) {
 			this.codeLenses = [];
 			this.locations = [];
+			// console.log('doc: ', document.fileName, ', lang: ', document.languageId);
 			const regex = new RegExp(this.regex);
 			const text = document.getText();
 			let matches;
@@ -169,7 +170,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
 		return [];
 	}
 
-	public resolveCodeLens(codeLens: vscode.CodeLens, token: vscode.CancellationToken) {
+	public resolveCodeLens(codeLens: vscode.CodeLens, _token: vscode.CancellationToken) {
 		if (settings.enableCodeLens) {
 			// console.log("codelens:", codeLens);
 			return codeLens;

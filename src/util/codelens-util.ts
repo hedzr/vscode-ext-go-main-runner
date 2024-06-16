@@ -15,7 +15,7 @@ export function install(c: vscode.ExtensionContext) {
     // context = c;
     // terminalOperator = new Term(c);
 
-    su.install(c);
+    su.install(c); // status bar util wants to holding a context pointer
 
     c.subscriptions.push(vscode.commands.registerCommand(settings.runAsPackageCmd, () => {
         settings.runAsPackage = true;

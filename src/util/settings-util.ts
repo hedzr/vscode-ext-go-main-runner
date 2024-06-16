@@ -35,6 +35,16 @@ export function focusedEditingFilePath(): string {
     return '';
 }
 
+export function focusedEditingFileLangId(): string {
+    const activeEditor = vscode.window.activeTextEditor;
+    if (activeEditor) {
+        // for getting file path
+        const x = activeEditor.document.languageId;
+        return x;
+    }
+    return '';
+}
+
 export async function openVscodeSettings(jsonDirectly: boolean = false, filter = '') {
     if (jsonDirectly) {
         await vscode.commands.executeCommand(
@@ -138,7 +148,7 @@ export class launchableObj {
     constructor(src?: string, launchConfig?: any) {
         this.mainGo = src ?? focusedEditingFilePath();
         this.launchConfig = launchConfig;
-
+        
         this.gomod = findGoMod(this.mainGo);
         if (!this.gomod) {
             vscode.window.showInformationMessage('Fail to go run: go.mod not found.');
@@ -187,6 +197,7 @@ export class launchableObj {
         if (!workspaceFolders || workspaceFolders.length === 0) {
             return;
         }
+
         for (const workspaceFolder of workspaceFolders) {
             const folderString = workspaceFolder.uri.fsPath;
             if (!folderString || !this.mainGo.startsWith(folderString)) {
@@ -335,7 +346,7 @@ export function runWithConfig(runCmd: string, config?: any, callback?: () => voi
 }
 
 // see: https://stackoverflow.com/questions/43007267/how-to-run-a-system-command-from-vscode-extension
-export function launchMainProg(src: string, config?: any, ...extraArgs: any[]) {
+export function launchMainProg(src: string, config?: any, ..._extraArgs: any[]) {
     const launchable = new launchableObj(src, config);
 
     // const execShell = (cmd: string) =>
