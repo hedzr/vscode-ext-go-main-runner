@@ -235,19 +235,19 @@
         "command": "go-main-runner.launchConfigs.runOrDebug",
         "key": "ctrl+m ctrl+l",
         "mac": "cmd+m cmd+l",
-        "when": "debuggersAvailable && debugState != 'initializing' && editorLangId == go"
+        "when": "debuggersAvailable && debugState != 'initializing' && editorLangId == 'go'"
       },
       {
         "command": "go-main-runner.codeLens.runOrDebug",
         "key": "ctrl+m ctrl+r",
         "mac": "cmd+k cmd+r",
-        "when": "editorTextFocus && editorLangId == go"
+        "when": "editorTextFocus && editorLangId == 'go'"
       },
       {
         "key": "ctrl+m ctrl+n",
         "mac": "cmd+m cmd+n",
         "command": "workbench.action.debug.run",
-        "when": "debuggersAvailable && debugState != 'initializing' && editorLangId == go"
+        "when": "debuggersAvailable && debugState != 'initializing'"
       },
       {
         "key": "ctrl+m ctrl+b",
@@ -255,7 +255,6 @@
         "command": "workbench.action.debug.start",
         "when": "debuggersAvailable && debugState == 'inactive'"
       }
-
     ],
 
     "configuration": {
@@ -269,7 +268,10 @@
         },
         "go-main-runner.main.run.mode": {
           "type": "string",
-          "enum": ["runInTerminal", "asTask"],
+          "enum": [
+            "runInTerminal",
+            "asTask"
+          ],
           "default": "asTask",
           "description": "run mode of 'go run'",
           "order": 100
@@ -349,7 +351,11 @@
         },
         "go-main-runner.launch.mode": {
           "type": "string",
-          "enum": ["runInTerminal", "run", "debug"],
+          "enum": [
+            "runInTerminal",
+            "run",
+            "debug"
+          ],
           "enumDescriptions": [
             "Go Run In Terminal window",
             "Delve Run (vscode way)",
@@ -373,23 +379,23 @@
         }
       }
     },
-
+    
     "taskDefinitions": [
       {
-          "type": "go-main-runner",
-          "required": [
-              "task"
-          ],
-          "properties": {
-              "task": {
-                  "type": "string",
-                  "description": "The Go Run task to customize"
-              },
-              "file": {
-                  "type": "string",
-                  "description": "The Go source file or folder that provides the task. Can be omitted."
-              }
+        "type": "go-main-runner",
+        "required": [
+          "task"
+        ],
+        "properties": {
+          "task": {
+            "type": "string",
+            "description": "The Go Run task to customize"
+          },
+          "file": {
+            "type": "string",
+            "description": "The Go source file or folder that provides the task. Can be omitted."
           }
+        }
       }
     ]
   },
@@ -407,18 +413,18 @@
   },
   "devDependencies": {
     "@types/common-ancestor-path": "^1.0.2",
-    "@types/vscode": "^1.73.0",
     "@types/mocha": "^10.0.6",
-    "@types/node": "18.x",
-    "@typescript-eslint/eslint-plugin": "^7.4.0",
-    "@typescript-eslint/parser": "^7.4.0",
-    "eslint": "^8.57.0",
-    "typescript": "^5.3.3",
-    "ts-loader": "^9.5.1",
-    "webpack": "^5.91.0",
-    "webpack-cli": "^5.1.4",
+    "@types/node": "~18.19.34",
+    "@types/vscode": "^1.90.0",
+    "@typescript-eslint/eslint-plugin": "^7.13.0",
+    "@typescript-eslint/parser": "^7.13.0",
     "@vscode/test-cli": "^0.0.8",
-    "@vscode/test-electron": "^2.3.9"
+    "@vscode/test-electron": "^2.4.0",
+    "eslint": "^8.57.0",
+    "ts-loader": "^9.5.1",
+    "typescript": "^5.4.5",
+    "webpack": "^5.92.0",
+    "webpack-cli": "^5.1.4"
   },
   "dependencies": {
     "common-ancestor-path": "^1.0.1"
