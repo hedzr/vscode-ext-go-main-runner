@@ -2,7 +2,7 @@
   "name": "go-main-runner",
   "displayName": "Go Main Runner",
   "description": "run or debug main function in-place",
-  "version": "1.2.11",
+  "version": "1.2.12",
   "publisher": "hedzr",
   "license": "Apache 2.0",
   "repository": {
@@ -19,6 +19,9 @@
     "color": "#F2F2F2",
     "theme": "light"
   },
+  "extensionDependencies": [
+    "golang.go"
+  ],
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -415,7 +418,7 @@
     "@types/common-ancestor-path": "^1.0.2",
     "@types/mocha": "^10.0.6",
     "@types/node": "~18.19.34",
-    "@types/vscode": "^1.90.0",
+    "@types/vscode": "^1.75.0",
     "@typescript-eslint/eslint-plugin": "^7.13.0",
     "@typescript-eslint/parser": "^7.13.0",
     "@vscode/test-cli": "^0.0.8",
