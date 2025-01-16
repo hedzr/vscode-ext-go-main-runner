@@ -148,7 +148,7 @@ export class launchableObj {
     constructor(src?: string, launchConfig?: any) {
         this.mainGo = src ?? focusedEditingFilePath();
         this.launchConfig = launchConfig;
-        
+
         this.gomod = findGoMod(this.mainGo);
         if (!this.gomod) {
             vscode.window.showInformationMessage('Fail to go run: go.mod not found.');
@@ -159,13 +159,13 @@ export class launchableObj {
         this.tags = this.buildTags(this.launchConfig);
         let buildFlags = '';
         if (this.launchConfig) {
-            if (this.tags) {
+            if (this.tags && this.tags !== '') {
                 console.log(`[launchable] launch config is: ${this.launchConfig}`);
                 this.launchConfig.buildFlags = `${this.launchConfig.buildFlags} -tags '${this.tags}'`;
                 buildFlags = this.launchConfig.buildFlags;
             }
         }
-        if (!buildFlags) {
+        if (!buildFlags && this.tags !== '') {
             buildFlags = `-tags ${this.tags}`;
         }
 
