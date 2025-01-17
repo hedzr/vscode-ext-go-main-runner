@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [History]
 
+### [1.2.15]
+
+- upgrade deps for the security patches
+  - fixed #3, #4 and #5
+
 ### [1.2.13]
 
 - fixed #2, “go: no go files listed” occurs when no tags are added
